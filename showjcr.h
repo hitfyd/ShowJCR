@@ -47,7 +47,8 @@ private:
     static const QString author;
     QString appName;//程序名称
     QString appPath;// 程序路径
-    static const QString iconPath;//程序图标路径
+    static const QString iconName;//程序图标名称
+    static const QString datasetName;//数据库名称
     static const QString defaultJournal;
     QSystemTrayIcon m_systray;//系统托盘
 

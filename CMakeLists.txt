@@ -34,10 +34,12 @@ set(PROJECT_SOURCES
         showjcr.h
         showjcr.ui
 )
+set(app_WINRC logo.rc)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ShowJCR WIN32 #增加WIN32，否则独立运行时会出现命令行
         ${PROJECT_SOURCES}
+        ${app_WINRC}
     )
 else()
     if(ANDROID)

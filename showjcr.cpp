@@ -11,7 +11,8 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::iconPath = "jcr-logo.jpg";
+const QString ShowJCR::iconName = "jcr-logo.jpg";
+const QString ShowJCR::datasetName = "jcr.db";
 const QString ShowJCR::defaultJournal = "National Science Review";
 
 ShowJCR::ShowJCR(QWidget *parent)
@@ -21,10 +22,11 @@ ShowJCR::ShowJCR(QWidget *parent)
     ui->setupUi(this);
     appName = QApplication::applicationName();//程序名称
     appPath = QApplication::applicationFilePath();// 程序路径
-    QApplication::setWindowIcon(QIcon(iconPath));//设置程序图标
+    QApplication::setWindowIcon(QIcon(iconName));//设置程序图标
+
     //设置系统托盘
     m_systray.setToolTip(appName);//设置提示文字
-    m_systray.setIcon(QIcon(iconPath));//设置托盘图标
+    m_systray.setIcon(QIcon(iconName));//设置托盘图标
     QMenu * menu = new QMenu();
     menu->addAction(ui->actionExit);
     m_systray.setContextMenu(menu);//托盘菜单项
@@ -35,17 +37,21 @@ ShowJCR::ShowJCR(QWidget *parent)
     //设置剪切板监听
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(getClipboard()));
 
-    //连接SQLite3数据集"jcr.db"，该数据集应放在运行目录下
+    //连接SQLite3数据库"jcr.db"，该数据集应放在运行目录下
     database = QSqlDatabase::addDatabase("QSQLITE");
-    database.setDatabaseName("jcr.db");
+    database.setDatabaseName(datasetName);
+    database.setConnectOptions("QSQLITE_OPEN_READONLY");//设置连接属性：当数据库不存在时不自动创建
     if (!database.open())
     {
         qDebug() << "Error: Failed to connect database." << database.lastError();
-        QMessageBox::warning(this, "Error: Failed to connect database.", database.lastError().text());
+        QMessageBox::warning(this, "期刊信息数据库缺失！", database.lastError().text());
     }
     else
     {
         qDebug() << "Successed to connect database.";
+        //使用默认期刊进行查询，设置界面初始默认显示
+        journalName = defaultJournal;
+        run();
     }
 
     //设置期刊输入自动联想
@@ -67,10 +73,6 @@ ShowJCR::ShowJCR(QWidget *parent)
 
     //检查程序自启动设置是否有效
     setAutoStart();
-
-    //设置界面初始默认显示
-    journalName = defaultJournal;
-    run();
 }
 
 ShowJCR::~ShowJCR()
