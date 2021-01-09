@@ -194,6 +194,7 @@ QStringList ShowJCR::selectAllJournalNames()
 void ShowJCR::run()
 {
     selectSuccess = false;
+    journalName = journalName.simplified();//输入简化，首尾空格清除，中间空格均变为1个，便于剪切板复制不精确时有效性
     selectZKYFQB();
     selectImpactFactor();
     selectWarningLevel();
