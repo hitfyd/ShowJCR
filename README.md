@@ -14,7 +14,7 @@
 
 中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，通过爬虫获取，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息。
 
-JCR期刊影响因子来源于https://jcr.clarivate.com/，直接下载完整的JCR报告获取，但该报告不包含JCR分区信息，暂时还没有实现对JCR分区信息的爬虫，欢迎有能力的开发者参与或分享！（注：极少部分期刊没有JCR影响因子）
+JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.com)，直接下载完整的JCR报告获取，但该报告不包含JCR分区信息，暂时还没有实现对JCR分区信息的爬虫，欢迎有能力的开发者参与或分享！（注：极少部分期刊没有JCR影响因子）
 
 国际期刊预警等级来源于[《国际期刊预警名单（试行）》](https://mp.weixin.qq.com/s/xbyJFtR2lezv6CyRrkxsdA)，处理时删去了期刊的大类学科分区信息。
 
