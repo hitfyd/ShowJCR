@@ -7,11 +7,10 @@
 #include <QStandardItem>
 #include <QCompleter>
 #include <QMimeData>
-#include <QDir>
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::iconName = "jcr-logo.jpg";
+const QString ShowJCR::iconName = "jcr-logo.jpg"; //在程序自启动时，程序的运行目录是C:/WINDOWS/system32而不是程序目录，因此需要结合QApplication::applicationFilePath()修改
 const QString ShowJCR::datasetName = "jcr.db";
 const QString ShowJCR::defaultJournal = "National Science Review";
 
@@ -21,12 +20,16 @@ ShowJCR::ShowJCR(QWidget *parent)
 {
     ui->setupUi(this);
     appName = QApplication::applicationName();//程序名称
+    appDir = QDir(QApplication::applicationDirPath());//程序目录（QDir类型）
     appPath = QApplication::applicationFilePath();// 程序路径
-    QApplication::setWindowIcon(QIcon(iconName));//设置程序图标
+    QIcon icon(appDir.absoluteFilePath(iconName));
+    QApplication::setWindowIcon(icon);//设置程序图标
+
+    qDebug() << appName << appDir.path() << appPath << icon;
 
     //设置系统托盘
     m_systray.setToolTip(appName);//设置提示文字
-    m_systray.setIcon(QIcon(iconName));//设置托盘图标
+    m_systray.setIcon(icon);//设置托盘图标
     QMenu * menu = new QMenu();
     menu->addAction(ui->actionExit);
     m_systray.setContextMenu(menu);//托盘菜单项
@@ -39,8 +42,9 @@ ShowJCR::ShowJCR(QWidget *parent)
 
     //连接SQLite3数据库"jcr.db"，该数据集应放在运行目录下
     database = QSqlDatabase::addDatabase("QSQLITE");
-    database.setDatabaseName(datasetName);
+    database.setDatabaseName(appDir.absoluteFilePath(datasetName));
     database.setConnectOptions("QSQLITE_OPEN_READONLY");//设置连接属性：当数据库不存在时不自动创建
+    qDebug() << database;
     if (!database.open())
     {
         qDebug() << "Error: Failed to connect database." << database.lastError();
@@ -187,7 +191,7 @@ QStringList ShowJCR::selectAllJournalNames()
             journalNames << journalName;
         }
     }
-    qDebug() << journalNames.length();
+//    qDebug() << journalNames.length();
     return journalNames;
 }
 

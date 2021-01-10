@@ -18,6 +18,27 @@ JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.
 
 国际期刊预警等级来源于[《国际期刊预警名单（试行）》](https://mp.weixin.qq.com/s/xbyJFtR2lezv6CyRrkxsdA)，处理时删去了期刊的大类学科分区信息。
 
+### SQLite3数据库生成步骤
+
+国际期刊信息的原始数据随附在源代码中。
+
+SQLite3创建"jcr.db"并进入到SQLite命令行：
+
+```sqlite
+sqlite3 jcr.db
+```
+
+在SQLite命令行中，将原始数据导入到"jcr.db"：
+
+```sqlite
+.separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
+.import ZKYFQB2020-UTF8.csv fqb
+.import JCR2019.csv jcr
+.import Warning.csv warning
+```
+
+
+
 ## 使用说明
 
 软件的使用十分方便，如图所示，输入期刊名称，点击“查询”或输入“回车”即可获得期刊详细信息。“Top期刊”和“国际期刊预警等级”属性进行突出显示。

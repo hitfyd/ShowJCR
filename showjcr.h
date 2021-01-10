@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
+#include <QDir>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ShowJCR; }
@@ -46,6 +47,7 @@ private:
     //初始化数据
     static const QString author;
     QString appName;//程序名称
+    QDir appDir;//程序目录
     QString appPath;// 程序路径
     static const QString iconName;//程序图标名称
     static const QString datasetName;//数据库名称
