@@ -80,14 +80,14 @@ private:
     QString impactFactor; //JCR影响因子，极少部分期刊没有影响因子，如ESCI期刊
     QString warningLevel;   //中科院分区表国际期刊预警等级，分为高、中、低；不在名单中则为无。
 
-    //标记中科院分区表升级版是否收录该期刊，期刊名称是否正确
-    bool selectSuccess = false;
+    //当前数据库中包含的所有有效期刊名称，用于输入联想和判断输入期刊名称是否正确
+    QStringList allJournalNames;
 
     //查询数据库函数，每个函数对应一张表
     void selectZKYFQB();    //查询中科院分区表升级版
     void selectImpactFactor();
     void selectWarningLevel();
-    QStringList selectAllJournalNames();    //获取数据库中所有期刊目录，用作输入联想
+    void selectAllJournalNames();    //获取数据库中所有期刊目录，用作输入联想
 
     //运行核心查询及更新功能
     void run();

@@ -58,15 +58,15 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     //注册日志函数
     qInstallMessageHandler(outputMessage);
-    ShowJCR w;
     //设置程序单启动，使用共享内存创建的同时设置key,也可以setKey
-    QSharedMemory sm(a.applicationName());
+    QSharedMemory sm(QApplication::applicationName());
     if(sm.attach()){
         qDebug() << "SingleApp is running!";
-        QMessageBox::warning(&w, "程序正在运行", "程序已经启动，请不要重复运行！请检查任务栏或系统托盘！");
+        QMessageBox::warning(QApplication::activeWindow(), "程序正在运行", "程序已经启动，请不要重复运行！请检查任务栏或系统托盘！");
         return 0;
     }
     sm.create(1);
+    ShowJCR w;
     //如果有命令行参数而且参数是开机自启动
     if (argc > 1 && (argv[1] == QString("autoStart"))){//注意参数没有空格
         qDebug() << argv[1];

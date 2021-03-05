@@ -32,9 +32,11 @@ sqlite3 jcr.db
 
 ```sqlite
 .separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
-.import ZKYFQB2020-UTF8.csv fqb
+.import FQBJCR2020-UTF8.csv fqb
 .import JCR2019.csv jcr
 .import Warning.csv warning
+.import CCF2019-UTF8.csv ccf
+.import CCFChinese2019-UTF8.csv ccfchinese
 ```
 
 

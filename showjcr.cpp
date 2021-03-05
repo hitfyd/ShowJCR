@@ -53,16 +53,18 @@ ShowJCR::ShowJCR(QWidget *parent)
     else
     {
         qDebug() << "Successed to connect database.";
-        //使用默认期刊进行查询，设置界面初始默认显示
-        journalName = defaultJournal;
-        run();
     }
 
     //设置期刊输入自动联想
-    QCompleter *pCompleter=new QCompleter(selectAllJournalNames(),this);
+    selectAllJournalNames();
+    QCompleter *pCompleter=new QCompleter(allJournalNames,this);
     pCompleter->setFilterMode(Qt::MatchContains);    //部分内容匹配
     pCompleter->setCaseSensitivity(Qt::CaseInsensitive);    //设置为大小写不敏感
     ui->lineEdit_journalName->setCompleter(pCompleter);
+
+    //使用默认期刊进行查询，设置界面初始默认显示
+    journalName = defaultJournal;
+    run();
 
     //读取程序运行参数
     settings = new QSettings(author, appName);
@@ -134,7 +136,6 @@ void ShowJCR::selectZKYFQB()
                 subDivisions.append(subDivision);
                 subDivisionIndex += 2;
             }
-            selectSuccess = true;
 
             qDebug() << journalName << year << ISSN << webofScience << majorDivision.name << majorDivision.level << subDivisions[0].name << subDivisions[0].level;
         }
@@ -143,7 +144,7 @@ void ShowJCR::selectZKYFQB()
 
 void ShowJCR::selectImpactFactor()
 {
-    if(database.isOpen() & selectSuccess){
+    if(database.isOpen()){
         QSqlQuery query;
         QString select = "select * from jcr where Journal = '" + journalName + "' COLLATE NOCASE";
         if (!query.exec(select)){
@@ -161,7 +162,7 @@ void ShowJCR::selectImpactFactor()
 
 void ShowJCR::selectWarningLevel()
 {
-    if(database.isOpen() & selectSuccess){
+    if(database.isOpen()){
         QSqlQuery query;
         QString select = "select * from warning where Journal = '" + journalName + "'COLLATE NOCASE";
         if (!query.exec(select)){
@@ -177,9 +178,8 @@ void ShowJCR::selectWarningLevel()
     }
 }
 
-QStringList ShowJCR::selectAllJournalNames()
+void ShowJCR::selectAllJournalNames()
 {
-    QStringList journalNames;
     if(database.isOpen()){
         QSqlQuery query;
         QString select = "select Journal from fqb";
@@ -187,115 +187,114 @@ QStringList ShowJCR::selectAllJournalNames()
             qDebug() << "Error: Failed to selectJournalisExicted." << database.lastError();
         }
         while (query.next()){
-            journalName = query.value(0).toString();
-            journalNames << journalName;
+            QString journalName = query.value(0).toString();
+            allJournalNames << journalName;
         }
     }
-//    qDebug() << journalNames.length();
-    return journalNames;
+    //    qDebug() << journalNames.length();
 }
 
 void ShowJCR::run()
 {
-    selectSuccess = false;
     journalName = journalName.simplified();//输入简化，首尾空格清除，中间空格均变为1个，便于剪切板复制不精确时有效性
-    selectZKYFQB();
-    selectImpactFactor();
-    selectWarningLevel();
-    updateGUI();
+    qDebug() << journalName;
+    if(allJournalNames.contains(journalName)){
+        selectZKYFQB();
+        selectImpactFactor();
+        selectWarningLevel();
+        updateGUI();
+    }
+    else {
+        ui->lineEdit_journalName->setText("期刊不存在，请检查期刊名称！");
+    }
 }
 
 void ShowJCR::updateGUI()
 {
-    if(selectSuccess){
-        ui->tableView_journalInformation->setShowGrid(true);
-        ui->tableView_journalInformation->setGridStyle(Qt::DotLine);
-        ui->tableView_journalInformation->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView_journalInformation->setShowGrid(true);
+    ui->tableView_journalInformation->setGridStyle(Qt::DotLine);
+    ui->tableView_journalInformation->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-        QStandardItemModel* model = new QStandardItemModel();
-        QStandardItem* item = 0;
-        item = new QStandardItem("Journal名称");
-        model->setItem(0, 0, item);
-        item = new QStandardItem(journalName);
-        model->setItem(0, 1, item);
-        item = new QStandardItem("");
-        model->setItem(0, 2, item);
-        item = new QStandardItem("年份");
-        model->setItem(1, 0, item);
-        item = new QStandardItem(QString::number(year));
-        model->setItem(1, 1, item);
-        item = new QStandardItem("");
-        model->setItem(1, 2, item);
-        item = new QStandardItem("ISSN");
-        model->setItem(2, 0, item);
-        item = new QStandardItem(ISSN);
-        model->setItem(2, 1, item);
-        item = new QStandardItem("");
-        model->setItem(2, 2, item);
-        item = new QStandardItem("Review");
-        model->setItem(3, 0, item);
-        item = new QStandardItem(review);
-        model->setItem(3, 1, item);
-        item = new QStandardItem("");
-        model->setItem(3, 2, item);
-        item = new QStandardItem("Open Access");
-        model->setItem(4, 0, item);
-        item = new QStandardItem(openAccess);
-        model->setItem(4, 1, item);
-        item = new QStandardItem("");
-        model->setItem(4, 2, item);
-        item = new QStandardItem("Web of Science");
-        model->setItem(5, 0, item);
-        item = new QStandardItem(webofScience);
-        model->setItem(5, 1, item);
-        item = new QStandardItem("");
-        model->setItem(5, 2, item);
+    QStandardItemModel* model = new QStandardItemModel();
+    QStandardItem* item = 0;
+    item = new QStandardItem("Journal名称");
+    model->setItem(0, 0, item);
+    item = new QStandardItem(journalName);
+    model->setItem(0, 1, item);
+    item = new QStandardItem("");
+    model->setItem(0, 2, item);
+    item = new QStandardItem("年份");
+    model->setItem(1, 0, item);
+    item = new QStandardItem(QString::number(year));
+    model->setItem(1, 1, item);
+    item = new QStandardItem("");
+    model->setItem(1, 2, item);
+    item = new QStandardItem("ISSN");
+    model->setItem(2, 0, item);
+    item = new QStandardItem(ISSN);
+    model->setItem(2, 1, item);
+    item = new QStandardItem("");
+    model->setItem(2, 2, item);
+    item = new QStandardItem("Review");
+    model->setItem(3, 0, item);
+    item = new QStandardItem(review);
+    model->setItem(3, 1, item);
+    item = new QStandardItem("");
+    model->setItem(3, 2, item);
+    item = new QStandardItem("Open Access");
+    model->setItem(4, 0, item);
+    item = new QStandardItem(openAccess);
+    model->setItem(4, 1, item);
+    item = new QStandardItem("");
+    model->setItem(4, 2, item);
+    item = new QStandardItem("Web of Science");
+    model->setItem(5, 0, item);
+    item = new QStandardItem(webofScience);
+    model->setItem(5, 1, item);
+    item = new QStandardItem("");
+    model->setItem(5, 2, item);
 
-        item = new QStandardItem("Impact Factor(JCR2019)");
-        model->setItem(6, 0, item);
-        item = new QStandardItem(impactFactor);
-        model->setItem(6, 1, item);
-        item = new QStandardItem("");
-        model->setItem(6, 2, item);
-        item = new QStandardItem("Top期刊");
-        model->setItem(7, 0, item);
-        item = new QStandardItem(top);
-        model->setItem(7, 1, item);
-        model->item(7, 1)->setBackground(QBrush(Qt::lightGray));    //突出显示
-        item = new QStandardItem("");
-        model->setItem(7, 2, item);
-        item = new QStandardItem("国际期刊预警等级");
-        model->setItem(8, 0, item);
-        item = new QStandardItem(warningLevel);
-        model->setItem(8, 1, item);
-        model->item(8, 1)->setBackground(QBrush(Qt::lightGray));    //突出显示
-        item = new QStandardItem("");
-        model->setItem(8, 2, item);
+    item = new QStandardItem("Impact Factor(JCR2019)");
+    model->setItem(6, 0, item);
+    item = new QStandardItem(impactFactor);
+    model->setItem(6, 1, item);
+    item = new QStandardItem("");
+    model->setItem(6, 2, item);
+    item = new QStandardItem("Top期刊");
+    model->setItem(7, 0, item);
+    item = new QStandardItem(top);
+    model->setItem(7, 1, item);
+    model->item(7, 1)->setBackground(QBrush(Qt::lightGray));    //突出显示
+    item = new QStandardItem("");
+    model->setItem(7, 2, item);
+    item = new QStandardItem("国际期刊预警等级");
+    model->setItem(8, 0, item);
+    item = new QStandardItem(warningLevel);
+    model->setItem(8, 1, item);
+    model->item(8, 1)->setBackground(QBrush(Qt::lightGray));    //突出显示
+    item = new QStandardItem("");
+    model->setItem(8, 2, item);
 
-        item = new QStandardItem("大类");
-        model->setItem(9, 0, item);
-        item = new QStandardItem(majorDivision.name);
-        model->setItem(9, 1, item);
-        item = new QStandardItem(QString::number(majorDivision.level));
-        model->setItem(9, 2, item);
-        for(int i = 0; i < subDivisions.length(); i++){
-            item = new QStandardItem("小类");
-            model->setItem(10+i, 0, item);
-            item = new QStandardItem(subDivisions[i].name);
-            model->setItem(10+i, 1, item);
-            item = new QStandardItem(QString::number(subDivisions[i].level));
-            model->setItem(10+i, 2, item);
-        }
-
-        ui->tableView_journalInformation->setModel(model);
-        ui->lineEdit_journalName->setText(journalName);
-        if(autoActivateWindow){
-            this->showNormal();
-            this->activateWindow(); //激活窗口到前台
-        }
+    item = new QStandardItem("大类");
+    model->setItem(9, 0, item);
+    item = new QStandardItem(majorDivision.name);
+    model->setItem(9, 1, item);
+    item = new QStandardItem(QString::number(majorDivision.level));
+    model->setItem(9, 2, item);
+    for(int i = 0; i < subDivisions.length(); i++){
+        item = new QStandardItem("小类");
+        model->setItem(10+i, 0, item);
+        item = new QStandardItem(subDivisions[i].name);
+        model->setItem(10+i, 1, item);
+        item = new QStandardItem(QString::number(subDivisions[i].level));
+        model->setItem(10+i, 2, item);
     }
-    else {
-        ui->lineEdit_journalName->setText("期刊不存在，请检查期刊名称！");
+
+    ui->tableView_journalInformation->setModel(model);
+    ui->lineEdit_journalName->setText(journalName);
+    if(autoActivateWindow){
+        this->showNormal();
+        this->activateWindow(); //激活窗口到前台
     }
 }
 
