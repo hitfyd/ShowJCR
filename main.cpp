@@ -10,14 +10,13 @@
 
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
  {
-     // 加锁
-     static QMutex mutex;
-     static QString logName = QApplication::applicationName() + "_log.txt";
-     mutex.lock();
      QString text;
      switch(type)
      {
      case QtDebugMsg:
+//#ifndef QT_DEBUG
+//         return;
+//#endif
          text = QString("Debug:");
          break;
      case QtWarningMsg:
@@ -33,16 +32,20 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
      }
 
      // 设置输出信息格式
-     QString context_info = QString("File:(%1) Line:(%2)").arg(QString(context.file)).arg(context.line);
+     QString context_info = QString("File:(%1) Line:(%2) Function:(%3)").arg(QString(context.file)).arg(context.line).arg(context.function);
      QString current_date_time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
      QString current_date = QString("(%1)").arg(current_date_time);
      QString message;
 #ifdef QT_DEBUG
-     message = QString("%1 %2 %3 %4").arg(text).arg(context_info).arg(msg).arg(current_date);
+     message = QString("%1 %2 %3 %4").arg(text).arg(current_date).arg(context_info).arg(msg);
 #else
-     message = QString("%1 %2").arg(current_date).arg(msg);
+     message = QString("%1 %2 %3").arg(text).arg(current_date).arg(msg);
 #endif
      // 输出信息至文件中（读写、追加形式）
+     // 加文件锁
+     static QMutex mutex;
+     static QString logName = QApplication::applicationName() + "_log.txt";
+     mutex.lock();
      QFile file(QDir::temp().absoluteFilePath(logName));    //日志文件写在temp目录
      file.open(QIODevice::WriteOnly | QIODevice::Append);
      QTextStream text_stream(&file);
@@ -61,7 +64,7 @@ int main(int argc, char *argv[])
     //设置程序单启动，使用共享内存创建的同时设置key,也可以setKey
     QSharedMemory sm(QApplication::applicationName());
     if(sm.attach()){
-        qDebug() << "SingleApp is running!";
+        qWarning() << "SingleApp is running!" << __FUNCTION__;
         QMessageBox::warning(QApplication::activeWindow(), "程序正在运行", "程序已经启动，请不要重复运行！请检查任务栏或系统托盘！");
         return 0;
     }

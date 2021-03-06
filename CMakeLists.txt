@@ -32,6 +32,8 @@ set(PROJECT_SOURCES
         main.cpp
         showjcr.cpp
         showjcr.h
+        sqlitedb.cpp
+        sqlitedb.h
         showjcr.ui
 )
 set(app_WINRC logo.rc)

@@ -18,6 +18,8 @@ JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.
 
 国际期刊预警等级来源于[《国际期刊预警名单（试行）》](https://mp.weixin.qq.com/s/xbyJFtR2lezv6CyRrkxsdA)，处理时删去了期刊的大类学科分区信息。
 
+中国计算机学会（CCF）[推荐国际学术会议和期刊目录](https://www.ccf.org.cn/Academic_Evaluation/By_category/)，[推荐中文科技期刊目录](https://www.ccf.org.cn/ccftjgjxskwml/)。
+
 ### SQLite3数据库生成步骤
 
 国际期刊信息的原始数据随附在源代码中。
@@ -39,7 +41,11 @@ sqlite3 jcr.db
 .import CCFChinese2019-UTF8.csv ccfchinese
 ```
 
+## 运行依赖
 
+1. **jcr-logo.jpg**，用于系统托盘图标；
+3. **jcr.db**，期刊信息数据库；
+3. Qt相关依赖（使用windeployqt自动生成后可以裁剪）。
 
 ## 使用说明
 

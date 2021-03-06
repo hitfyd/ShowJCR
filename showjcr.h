@@ -1,6 +1,8 @@
 #ifndef SHOWJCR_H
 #define SHOWJCR_H
 
+#include "sqlitedb.h"
+
 #include <QWidget>
 #include <QtSql/QSqlDatabase>
 #include <QClipboard>
@@ -43,6 +45,7 @@ private slots:
 
 private:
     Ui::ShowJCR *ui;
+    SqliteDB *sqliteDB;
     QSqlDatabase database;
     //初始化数据
     static const QString author;
@@ -61,33 +64,28 @@ private:
     bool monitorClipboard = false;  //是否监听剪切板
     bool autoActivateWindow = false;    //查询成功后是否激活到前台显示，用于根据剪切板查询成功后显示
 
-    //期刊分区信息结构体
-    struct Division{
-        QString name;   //分区名称
-        int level;  //合法值只包括:1、2、3、4
-    };
+//    //期刊分区信息结构体
+//    struct Division{
+//        QString name;   //分区名称
+//        int level;  //合法值只包括:1、2、3、4
+//    };
 
     //期刊信息
-    QString journalName;    //期刊全称
-    int year;   //中科院分区表升级版发布年份
-    QString ISSN;   //国际标准连续出版物号（International Standard Serial Number，ISSN）
-    QString review;    //是否为Review期刊
-    QString openAccess;    //是否为OpenAccess期刊
-    QString webofScience;   //SCI收录类型，分为SCI、SCIE、SSCI、ESCI等
-    Division majorDivision; //大类分区信息
-    QString top;   //是否为大类顶刊
-    QVector<Division> subDivisions; //小类分区信息向量，一本期刊通常包含一至多个小类分区
-    QString impactFactor; //JCR影响因子，极少部分期刊没有影响因子，如ESCI期刊
-    QString warningLevel;   //中科院分区表国际期刊预警等级，分为高、中、低；不在名单中则为无。
+    QList<Pair> journalInfo;    //期刊详细信息
+    QString journalName;    //期刊名称，用于输入和查询
+//    int year;   //中科院分区表升级版发布年份
+//    QString ISSN;   //国际标准连续出版物号（International Standard Serial Number，ISSN）
+//    QString review;    //是否为Review期刊
+//    QString openAccess;    //是否为OpenAccess期刊
+//    QString webofScience;   //SCI收录类型，分为SCI、SCIE、SSCI、ESCI等
+//    Division majorDivision; //大类分区信息
+//    QString top;   //是否为大类顶刊
+//    QVector<Division> subDivisions; //小类分区信息向量，一本期刊通常包含一至多个小类分区
+//    QString impactFactor; //JCR影响因子，极少部分期刊没有影响因子，如ESCI期刊
+//    QString warningLevel;   //中科院分区表国际期刊预警等级，分为高、中、低；不在名单中则为无。
 
     //当前数据库中包含的所有有效期刊名称，用于输入联想和判断输入期刊名称是否正确
-    QStringList allJournalNames;
-
-    //查询数据库函数，每个函数对应一张表
-    void selectZKYFQB();    //查询中科院分区表升级版
-    void selectImpactFactor();
-    void selectWarningLevel();
-    void selectAllJournalNames();    //获取数据库中所有期刊目录，用作输入联想
+    QStringList allJournalNamesList;
 
     //运行核心查询及更新功能
     void run();

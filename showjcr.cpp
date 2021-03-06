@@ -40,24 +40,11 @@ ShowJCR::ShowJCR(QWidget *parent)
     //设置剪切板监听
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(getClipboard()));
 
-    //连接SQLite3数据库"jcr.db"，该数据集应放在运行目录下
-    database = QSqlDatabase::addDatabase("QSQLITE");
-    database.setDatabaseName(appDir.absoluteFilePath(datasetName));
-    database.setConnectOptions("QSQLITE_OPEN_READONLY");//设置连接属性：当数据库不存在时不自动创建
-    qDebug() << database;
-    if (!database.open())
-    {
-        qDebug() << "Error: Failed to connect database." << database.lastError();
-        QMessageBox::warning(this, "期刊信息数据库缺失！", database.lastError().text());
-    }
-    else
-    {
-        qDebug() << "Successed to connect database.";
-    }
+    sqliteDB = new SqliteDB(appDir, datasetName);
+    allJournalNamesList = sqliteDB->getAllJournalNames();
 
     //设置期刊输入自动联想
-    selectAllJournalNames();
-    QCompleter *pCompleter=new QCompleter(allJournalNames,this);
+    QCompleter *pCompleter=new QCompleter(allJournalNamesList,this);
     pCompleter->setFilterMode(Qt::MatchContains);    //部分内容匹配
     pCompleter->setCaseSensitivity(Qt::CaseInsensitive);    //设置为大小写不敏感
     ui->lineEdit_journalName->setCompleter(pCompleter);
@@ -84,9 +71,8 @@ ShowJCR::ShowJCR(QWidget *parent)
 ShowJCR::~ShowJCR()
 {
     delete ui;
-    if(database.isOpen()){
-        database.close();
-    }
+    delete sqliteDB;
+
     //存储程序运行参数
     settings->setValue("autoStart", autoStart);
     settings->setValue("exit2Taskbar", exit2Taskbar);
@@ -109,99 +95,12 @@ void ShowJCR::on_lineEdit_journalName_returnPressed()
     on_pushButton_selectJournal_clicked();
 }
 
-void ShowJCR::selectZKYFQB()
-{
-    if(database.isOpen()){
-        QSqlQuery query;
-        QString select = "select * from fqb where Journal = '" + journalName + "'COLLATE NOCASE";   //设置查询不区分大小写
-        if (!query.exec(select)){
-            qDebug() << "Error: Failed to selectZKYFQB." << database.lastError();
-        }
-        if (query.first()){
-            journalName = query.value(0).toString();
-            year = query.value(1).toInt();
-            ISSN = query.value(2).toString();
-            review = query.value(3).toString();
-            openAccess = query.value(4).toString();
-            webofScience = query.value(5).toString();
-            majorDivision.name = query.value(6).toString();
-            majorDivision.level = query.value(7).toInt();
-            top = query.value(8).toString();
-            int subDivisionIndex = 9;
-            subDivisions.clear();
-            while(query.value(subDivisionIndex).isValid() & !query.value(subDivisionIndex).isNull()){
-                Division subDivision;
-                subDivision.name = query.value(subDivisionIndex).toString();
-                subDivision.level = query.value(subDivisionIndex + 1).toInt();
-                subDivisions.append(subDivision);
-                subDivisionIndex += 2;
-            }
-
-            qDebug() << journalName << year << ISSN << webofScience << majorDivision.name << majorDivision.level << subDivisions[0].name << subDivisions[0].level;
-        }
-    }
-}
-
-void ShowJCR::selectImpactFactor()
-{
-    if(database.isOpen()){
-        QSqlQuery query;
-        QString select = "select * from jcr where Journal = '" + journalName + "' COLLATE NOCASE";
-        if (!query.exec(select)){
-            qDebug() << "Error: Failed to selectImpactFactor." << database.lastError();
-        }
-        if (query.first()){
-            impactFactor = query.value(2).toString();
-        }
-        else{
-            impactFactor = "";  //查询无结果，SCI中不包含该期刊
-        }
-        qDebug() << journalName << impactFactor;
-    }
-}
-
-void ShowJCR::selectWarningLevel()
-{
-    if(database.isOpen()){
-        QSqlQuery query;
-        QString select = "select * from warning where Journal = '" + journalName + "'COLLATE NOCASE";
-        if (!query.exec(select)){
-            qDebug() << "Error: Failed to selectWarningLevel." << database.lastError();
-        }
-        if (query.first()){
-            warningLevel = query.value(1).toString();
-        }
-        else{
-            warningLevel = ""; //查询无结果，不在国际期刊预警名单中
-        }
-        qDebug() << journalName << warningLevel;
-    }
-}
-
-void ShowJCR::selectAllJournalNames()
-{
-    if(database.isOpen()){
-        QSqlQuery query;
-        QString select = "select Journal from fqb";
-        if (!query.exec(select)){
-            qDebug() << "Error: Failed to selectJournalisExicted." << database.lastError();
-        }
-        while (query.next()){
-            QString journalName = query.value(0).toString();
-            allJournalNames << journalName;
-        }
-    }
-    //    qDebug() << journalNames.length();
-}
-
 void ShowJCR::run()
 {
     journalName = journalName.simplified();//输入简化，首尾空格清除，中间空格均变为1个，便于剪切板复制不精确时有效性
     qDebug() << journalName;
-    if(allJournalNames.contains(journalName)){
-        selectZKYFQB();
-        selectImpactFactor();
-        selectWarningLevel();
+    if(allJournalNamesList.contains(journalName, Qt::CaseInsensitive)){   //不区分大小写
+        journalInfo = sqliteDB->getJournalInfo(journalName);
         updateGUI();
     }
     else {
@@ -212,82 +111,16 @@ void ShowJCR::run()
 void ShowJCR::updateGUI()
 {
     ui->tableView_journalInformation->setShowGrid(true);
-    ui->tableView_journalInformation->setGridStyle(Qt::DotLine);
+    ui->tableView_journalInformation->setGridStyle(Qt::DashLine);
     ui->tableView_journalInformation->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     QStandardItemModel* model = new QStandardItemModel();
     QStandardItem* item = 0;
-    item = new QStandardItem("Journal名称");
-    model->setItem(0, 0, item);
-    item = new QStandardItem(journalName);
-    model->setItem(0, 1, item);
-    item = new QStandardItem("");
-    model->setItem(0, 2, item);
-    item = new QStandardItem("年份");
-    model->setItem(1, 0, item);
-    item = new QStandardItem(QString::number(year));
-    model->setItem(1, 1, item);
-    item = new QStandardItem("");
-    model->setItem(1, 2, item);
-    item = new QStandardItem("ISSN");
-    model->setItem(2, 0, item);
-    item = new QStandardItem(ISSN);
-    model->setItem(2, 1, item);
-    item = new QStandardItem("");
-    model->setItem(2, 2, item);
-    item = new QStandardItem("Review");
-    model->setItem(3, 0, item);
-    item = new QStandardItem(review);
-    model->setItem(3, 1, item);
-    item = new QStandardItem("");
-    model->setItem(3, 2, item);
-    item = new QStandardItem("Open Access");
-    model->setItem(4, 0, item);
-    item = new QStandardItem(openAccess);
-    model->setItem(4, 1, item);
-    item = new QStandardItem("");
-    model->setItem(4, 2, item);
-    item = new QStandardItem("Web of Science");
-    model->setItem(5, 0, item);
-    item = new QStandardItem(webofScience);
-    model->setItem(5, 1, item);
-    item = new QStandardItem("");
-    model->setItem(5, 2, item);
-
-    item = new QStandardItem("Impact Factor(JCR2019)");
-    model->setItem(6, 0, item);
-    item = new QStandardItem(impactFactor);
-    model->setItem(6, 1, item);
-    item = new QStandardItem("");
-    model->setItem(6, 2, item);
-    item = new QStandardItem("Top期刊");
-    model->setItem(7, 0, item);
-    item = new QStandardItem(top);
-    model->setItem(7, 1, item);
-    model->item(7, 1)->setBackground(QBrush(Qt::lightGray));    //突出显示
-    item = new QStandardItem("");
-    model->setItem(7, 2, item);
-    item = new QStandardItem("国际期刊预警等级");
-    model->setItem(8, 0, item);
-    item = new QStandardItem(warningLevel);
-    model->setItem(8, 1, item);
-    model->item(8, 1)->setBackground(QBrush(Qt::lightGray));    //突出显示
-    item = new QStandardItem("");
-    model->setItem(8, 2, item);
-
-    item = new QStandardItem("大类");
-    model->setItem(9, 0, item);
-    item = new QStandardItem(majorDivision.name);
-    model->setItem(9, 1, item);
-    item = new QStandardItem(QString::number(majorDivision.level));
-    model->setItem(9, 2, item);
-    for(int i = 0; i < subDivisions.length(); i++){
-        item = new QStandardItem("小类");
-        model->setItem(10+i, 0, item);
-        item = new QStandardItem(subDivisions[i].name);
-        model->setItem(10+i, 1, item);
-        item = new QStandardItem(QString::number(subDivisions[i].level));
-        model->setItem(10+i, 2, item);
+    for(int i = 0; i < journalInfo.size(); i++){
+        item = new QStandardItem(journalInfo[i].first);
+        model->setItem(i, 0, item);
+        item = new QStandardItem(journalInfo[i].second);
+        model->setItem(i, 1, item);
     }
 
     ui->tableView_journalInformation->setModel(model);

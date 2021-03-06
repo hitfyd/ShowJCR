@@ -13,7 +13,7 @@
   <property name="font">
    <font>
     <family>微软雅黑</family>
-    <pointsize>10</pointsize>
+    <pointsize>8</pointsize>
     <weight>75</weight>
     <bold>true</bold>
    </font>
@@ -57,6 +57,14 @@
      </item>
      <item>
       <widget class="QTableView" name="tableView_journalInformation">
+       <property name="font">
+        <font>
+         <family>微软雅黑</family>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="editTriggers">
         <set>QAbstractItemView::NoEditTriggers</set>
        </property>
