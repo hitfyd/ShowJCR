@@ -146,6 +146,7 @@ void SqliteDB::selectAllJournalNames()
         allJournalNamesList += keyNames;
     }
     allJournalNamesList.removeDuplicates(); //  去重
+    allJournalNamesList.removeAll({});  //    去除空关键字
 //    qDebug() << allJournalNamesList.length();
 
     Q_ASSERT(allJournalNames.size() == tablePrimaryKeys.size());

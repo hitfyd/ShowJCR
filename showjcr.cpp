@@ -19,13 +19,15 @@ ShowJCR::ShowJCR(QWidget *parent)
     , ui(new Ui::ShowJCR)
 {
     ui->setupUi(this);
+
+    //获取程序运行信息
     appName = QApplication::applicationName();//程序名称
     appDir = QDir(QApplication::applicationDirPath());//程序目录（QDir类型）
     appPath = QApplication::applicationFilePath();// 程序路径
     QIcon icon(appDir.absoluteFilePath(iconName));
     QApplication::setWindowIcon(icon);//设置程序图标
 
-    qDebug() << appName << appDir.path() << appPath << icon;
+    qDebug() << "start check:" << appName << appDir.path() << appPath << icon;
 
     //设置系统托盘
     m_systray.setToolTip(appName);//设置提示文字
@@ -40,18 +42,17 @@ ShowJCR::ShowJCR(QWidget *parent)
     //设置剪切板监听
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(getClipboard()));
 
+    //初始化期刊数据库
     sqliteDB = new SqliteDB(appDir, datasetName);
-    allJournalNamesList = sqliteDB->getAllJournalNames();
 
     //设置期刊输入自动联想
-    QCompleter *pCompleter=new QCompleter(allJournalNamesList,this);
+    QCompleter *pCompleter=new QCompleter(sqliteDB->getAllJournalNames(),this);
     pCompleter->setFilterMode(Qt::MatchContains);    //部分内容匹配
     pCompleter->setCaseSensitivity(Qt::CaseInsensitive);    //设置为大小写不敏感
     ui->lineEdit_journalName->setCompleter(pCompleter);
 
     //使用默认期刊进行查询，设置界面初始默认显示
-    journalName = defaultJournal;
-    run();
+    run(defaultJournal);
 
     //读取程序运行参数
     settings = new QSettings(author, appName);
@@ -82,12 +83,7 @@ ShowJCR::~ShowJCR()
 
 void ShowJCR::on_pushButton_selectJournal_clicked()
 {
-    journalName = ui->lineEdit_journalName->text();
-    if(journalName.isEmpty()){
-        ui->lineEdit_journalName->setText("请输入期刊名称！");
-        return;
-    }
-    run();
+    run(ui->lineEdit_journalName->text());
 }
 
 void ShowJCR::on_lineEdit_journalName_returnPressed()
@@ -95,20 +91,27 @@ void ShowJCR::on_lineEdit_journalName_returnPressed()
     on_pushButton_selectJournal_clicked();
 }
 
-void ShowJCR::run()
+void ShowJCR::run(const QString &input)
 {
-    journalName = journalName.simplified();//输入简化，首尾空格清除，中间空格均变为1个，便于剪切板复制不精确时有效性
-    qDebug() << journalName;
-    if(allJournalNamesList.contains(journalName, Qt::CaseInsensitive)){   //不区分大小写
-        journalInfo = sqliteDB->getJournalInfo(journalName);
-        updateGUI();
+    //输入简化，首尾空格清除，中间空格均变为1个，便于剪切板复制不精确时有效性
+    QString journalName = input.simplified();
+    //检查输入是否为空
+    if(journalName.isEmpty()){
+        ui->lineEdit_journalName->setText("请输入期刊名称！");
+        return;
     }
-    else {
+    //检查输入是否在期刊数据库中，不区分大小写
+    if(!sqliteDB->getAllJournalNames().contains(journalName, Qt::CaseInsensitive)){   //不区分大小写
         ui->lineEdit_journalName->setText("期刊不存在，请检查期刊名称！");
+        return;
     }
+    //输入正确，执行查询
+    qDebug() << "select the journal:" << journalName;
+    journalInfo = sqliteDB->getJournalInfo(journalName);
+    updateGUI(journalName);
 }
 
-void ShowJCR::updateGUI()
+void ShowJCR::updateGUI(const QString &journalName)
 {
     ui->tableView_journalInformation->setShowGrid(true);
     ui->tableView_journalInformation->setGridStyle(Qt::DashLine);
@@ -163,8 +166,7 @@ void ShowJCR::getClipboard()
         const QClipboard *clipboard = QApplication::clipboard();
         const QMimeData *mimeData = clipboard->mimeData();
         if (mimeData->hasText()) {
-            journalName = clipboard->text();
-            run();
+            run(clipboard->text());
         }
     }
 }
