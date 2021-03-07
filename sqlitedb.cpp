@@ -3,7 +3,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include <QMessageBox>
-#include  <QApplication>
+#include <QApplication>
 
 SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *parent) : QObject(parent)
 {

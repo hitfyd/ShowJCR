@@ -4,7 +4,6 @@
 #include "sqlitedb.h"
 
 #include <QWidget>
-#include <QtSql/QSqlDatabase>
 #include <QClipboard>
 #include <QSettings>
 #include <QSystemTrayIcon>

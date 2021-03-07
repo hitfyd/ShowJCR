@@ -1,7 +1,5 @@
 #include "showjcr.h"
 #include "./ui_showjcr.h"
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlQuery>
 #include <QMessageBox>
 #include <QStandardItemModel>
 #include <QStandardItem>
