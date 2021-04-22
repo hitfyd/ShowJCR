@@ -39,6 +39,7 @@ sqlite3 jcr.db
 .import Warning.csv warning
 .import CCF2019-UTF8.csv ccf
 .import CCFChinese2019-UTF8.csv ccfchinese
+.import JCR2019extend-UTF8.csv jcrextend
 ```
 
 ## 运行依赖

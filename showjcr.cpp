@@ -43,6 +43,9 @@ ShowJCR::ShowJCR(QWidget *parent)
     //初始化期刊数据库
     sqliteDB = new SqliteDB(appDir, datasetName);
 
+    //设置期刊名称输入框提示文字
+    ui->lineEdit_journalName->setText(cueWords[0]);
+
     //设置期刊输入自动联想
     QCompleter *pCompleter=new QCompleter(sqliteDB->getAllJournalNames(),this);
     pCompleter->setFilterMode(Qt::MatchContains);    //部分内容匹配
@@ -95,12 +98,14 @@ void ShowJCR::run(const QString &input)
     QString journalName = input.simplified();
     //检查输入是否为空
     if(journalName.isEmpty()){
-        ui->lineEdit_journalName->setText("请输入期刊名称！");
+        ui->lineEdit_journalName->setText(cueWords[0]);
         return;
     }
     //检查输入是否在期刊数据库中，不区分大小写
     if(!sqliteDB->getAllJournalNames().contains(journalName, Qt::CaseInsensitive)){   //不区分大小写
-        ui->lineEdit_journalName->setText("期刊不存在，请检查期刊名称！");
+        if(!ui->lineEdit_journalName->text().contains(cueWords[1])){
+            ui->lineEdit_journalName->setText(cueWords[1] + ui->lineEdit_journalName->text());
+        }
         return;
     }
     //输入正确，执行查询
@@ -203,4 +208,11 @@ int ShowJCR::OnExit()
 {
     QApplication::exit(0);
     return 0;
+}
+
+void ShowJCR::on_lineEdit_journalName_textEdited(const QString &arg1)
+{
+    if(arg1.contains(cueWords[1])){
+        ui->lineEdit_journalName->setText(arg1.split(cueWords[1]).last());
+    }
 }

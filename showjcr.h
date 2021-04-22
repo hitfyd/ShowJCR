@@ -42,7 +42,12 @@ private slots:
 
     int OnExit();
 
+    void on_lineEdit_journalName_textEdited(const QString &arg1);
+
 private:
+    //系统提示语
+    QString cueWords[2] = {"请输入期刊名称！", "请检查期刊名称！"};
+
     Ui::ShowJCR *ui;
     SqliteDB *sqliteDB;
     //初始化数据

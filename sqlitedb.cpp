@@ -70,6 +70,16 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName)
             }
         }
     }
+    //查询输入不是期刊全称时，自动进行二次查询，显示完整信息
+    if(journalInfo.size() > 0 and journalInfo[0].first != primaryKey){
+        foreach(const Pair &info, journalInfo){
+            if(info.first == primaryKey){
+                journalInfo = getJournalInfo(info.second);
+                break;
+            }
+        }
+        qInfo() << "";
+    }
     return journalInfo;
 }
 
@@ -103,9 +113,6 @@ void SqliteDB::selectTableFields()
 
 void SqliteDB::setTablePrimaryKeys()
 {
-    //临时逻辑：判断表字段是否包含“Journal”，包含则作为主键，同时如果表的第一个字段不是“Journal”，则第一个字段也作为主键
-    QString primaryKey = "Journal";
-
     Q_ASSERT(tableNames.size() == tableFields.size());
 
     for(int i = 0; i < tableNames.size(); i++){
@@ -147,6 +154,15 @@ void SqliteDB::selectAllJournalNames()
     }
     allJournalNamesList.removeDuplicates(); //  去重
     allJournalNamesList.removeAll({});  //    去除空关键字
+//    qDebug() << allJournalNamesList.length();
+    //不分区大小写排序，然后删除只有大小写不一致的项
+    allJournalNamesList.sort(Qt::CaseInsensitive);
+    for(int i = 1; i < allJournalNamesList.length(); i++){
+        if(allJournalNamesList[i].toLower() == allJournalNamesList[i-1].toLower()){
+            allJournalNamesList.removeAt(i);
+            i--;
+        }
+    }
 //    qDebug() << allJournalNamesList.length();
 
     Q_ASSERT(allJournalNames.size() == tablePrimaryKeys.size());
