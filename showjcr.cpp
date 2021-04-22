@@ -44,7 +44,7 @@ ShowJCR::ShowJCR(QWidget *parent)
     sqliteDB = new SqliteDB(appDir, datasetName);
 
     //设置期刊名称输入框提示文字
-    ui->lineEdit_journalName->setText(cueWords[0]);
+    ui->lineEdit_journalName->setPlaceholderText(cueWords[0]);
 
     //设置期刊输入自动联想
     QCompleter *pCompleter=new QCompleter(sqliteDB->getAllJournalNames(),this);
@@ -98,7 +98,7 @@ void ShowJCR::run(const QString &input)
     QString journalName = input.simplified();
     //检查输入是否为空
     if(journalName.isEmpty()){
-        ui->lineEdit_journalName->setText(cueWords[0]);
+//        ui->lineEdit_journalName->setText(cueWords[0]);
         return;
     }
     //检查输入是否在期刊数据库中，不区分大小写
