@@ -19,6 +19,9 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
 //#endif
          text = QString("Debug:");
          break;
+     case QtInfoMsg:
+         text = QString("Info:");
+         break;
      case QtWarningMsg:
          text = QString("Warning:");
          break;

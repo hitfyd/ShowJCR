@@ -43,16 +43,17 @@ QStringList SqliteDB::getAllJournalNames()
 QList<Pair> SqliteDB::getJournalInfo(const QString &journalName)
 {
     Q_ASSERT(allJournalNamesList.contains(journalName, Qt::CaseInsensitive));
-    Q_ASSERT(allJournalNames.size() == tablePrimaryKeys.size());
+    Q_ASSERT(allKeyNames.size() == tablePrimaryKeys.size());
 
     QList<Pair> journalInfo;
+    QList<QString> journalInfoFieldNames;
     QSqlQuery query;
-    for(int i = 0; i < allJournalNames.size(); i++){
-        if(allJournalNames[i].contains(journalName, Qt::CaseInsensitive)){
+    for(int i = 0; i < allKeyNames.size(); i++){
+        if(allKeyNames[i].contains(journalName, Qt::CaseInsensitive)){
             const QString &table = tablePrimaryKeys[i].first;
             const QString &primaryKey = tablePrimaryKeys[i].second;
             if(database.isOpen()){
-                QString select = "select * from " + table + " where " + primaryKey + " = '" + journalName + "'COLLATE NOCASE";   //设置查询不区分大小写
+                QString select = "select * from " + table + " where " + primaryKey + " = '" + journalName + "' COLLATE NOCASE";   //设置查询不区分大小写
                 if (!query.exec(select)){
                     qWarning() << "Error: Failed to select " << table << __FUNCTION__ << database.lastError();
                 }
@@ -63,8 +64,15 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName)
                         if(value.isEmpty() || value.isNull())
                             continue;
                         Pair pair(fieldName, query.value(fieldName).toString());
-                        if(!journalInfo.contains(pair))
-                            journalInfo << pair;
+                        //排除字段名称重复的数据
+                        if(!journalInfoFieldNames.contains(pair.first)){
+                            //如果该字段是主键，则将主键数据放在最前面，用于后续判断是否需要二次查询
+                            if(pair.first == primaryKey)
+                                journalInfo.insert(0, pair);
+                            else
+                                journalInfo << pair;
+                            journalInfoFieldNames << pair.first;
+                        }
                     }
                 }
             }
@@ -75,10 +83,10 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName)
         foreach(const Pair &info, journalInfo){
             if(info.first == primaryKey){
                 journalInfo = getJournalInfo(info.second);
+                qInfo() << "auto select" << info.second;
                 break;
             }
         }
-        qInfo() << "";
     }
     return journalInfo;
 }
@@ -149,21 +157,26 @@ void SqliteDB::selectAllJournalNames()
             }
         }
 //        qDebug() << keyNames.length();
-        allJournalNames << keyNames;
-        allJournalNamesList += keyNames;
-    }
-    allJournalNamesList.removeDuplicates(); //  去重
-    allJournalNamesList.removeAll({});  //    去除空关键字
-//    qDebug() << allJournalNamesList.length();
-    //不分区大小写排序，然后删除只有大小写不一致的项
-    allJournalNamesList.sort(Qt::CaseInsensitive);
-    for(int i = 1; i < allJournalNamesList.length(); i++){
-        if(allJournalNamesList[i].toLower() == allJournalNamesList[i-1].toLower()){
-            allJournalNamesList.removeAt(i);
-            i--;
+        allKeyNames << keyNames;
+//        allJournalNamesList += keyNames;
+        //输入提示项去除大小写不一致的重复项
+        foreach(const QString &keyName, keyNames){
+            if(!allJournalNamesList.contains(keyName, Qt::CaseInsensitive))
+                allJournalNamesList << keyName;
         }
     }
-//    qDebug() << allJournalNamesList.length();
+//    allJournalNamesList.removeDuplicates(); //  去重
+//    allJournalNamesList.removeAll({});  //    去除空关键字
+////    qDebug() << allJournalNamesList.length();
+//    //不分区大小写排序，然后删除只有大小写不一致的项
+//    allJournalNamesList.sort(Qt::CaseInsensitive);
+//    for(int i = 1; i < allJournalNamesList.length(); i++){
+//        if(allJournalNamesList[i].toLower() == allJournalNamesList[i-1].toLower()){
+//            allJournalNamesList.removeAt(i);
+//            i--;
+//        }
+//    }
+    qDebug() << allJournalNamesList.length();
 
-    Q_ASSERT(allJournalNames.size() == tablePrimaryKeys.size());
+    Q_ASSERT(allKeyNames.size() == tablePrimaryKeys.size());
 }

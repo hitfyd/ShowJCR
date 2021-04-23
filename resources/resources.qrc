@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/jcr-logo.jpg</file>
+        <file>icon/exit.svg</file>
+        <file>icon/menu.svg</file>
+    </qresource>
+</RCC>

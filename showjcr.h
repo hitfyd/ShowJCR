@@ -9,6 +9,7 @@
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
 #include <QDir>
+#include <aboutdialog.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ShowJCR; }
@@ -44,21 +45,33 @@ private slots:
 
     void on_lineEdit_journalName_textEdited(const QString &arg1);
 
+    void on_toolButton_list_clicked();
+
+    void show_about();
+
 private:
     //系统提示语
-    QString cueWords[2] = {"请输入期刊名称！", "请检查期刊名称！"};
+    const QString cueWords[2] = {"请输入期刊名称！", "请检查期刊名称！"};
+    //软件常量，包括作者信息、资源文件路径等
+    static const QString author;
+    static const QString version;
+    static const QString email;
+    static const QString codeURL;
+    static const QString updateURL;
+    static const QString logoIconName;//程序图标名称（路径）
+    static const QString datasetName;//数据库名称（路径）
+    static const QString defaultJournal;//默认的查询期刊名称
 
     Ui::ShowJCR *ui;
     SqliteDB *sqliteDB;
     //初始化数据
-    static const QString author;
     QString appName;//程序名称
     QDir appDir;//程序目录
     QString appPath;// 程序路径
-    static const QString iconName;//程序图标名称
-    static const QString datasetName;//数据库名称
-    static const QString defaultJournal;
+
+    QMenu * menu;//菜单
     QSystemTrayIcon m_systray;//系统托盘
+    AboutDialog *aboutDialog;//关于窗口
 
     //程序运行参数
     QSettings *settings;

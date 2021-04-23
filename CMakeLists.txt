@@ -34,14 +34,19 @@ set(PROJECT_SOURCES
         showjcr.h
         sqlitedb.cpp
         sqlitedb.h
+        aboutdialog.cpp
+        aboutdialog.h
         showjcr.ui
+        aboutdialog.ui
 )
-set(app_WINRC logo.rc)
+set(app_WINRC resources/logo.rc)
+set(qrc_SOURCES resources/resources.qrc)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ShowJCR WIN32 #增加WIN32，否则独立运行时会出现命令行
         ${PROJECT_SOURCES}
         ${app_WINRC}
+        ${qrc_SOURCES}
     )
 else()
     if(ANDROID)

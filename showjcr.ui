@@ -21,6 +21,10 @@
   <property name="windowTitle">
    <string>中科院分区表升级版2020</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources/resources.qrc">
+    <normaloff>:/image/jcr-logo.jpg</normaloff>:/image/jcr-logo.jpg</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -88,7 +92,7 @@
        <item>
         <widget class="QCheckBox" name="checkBox_exit2Taskbar">
          <property name="text">
-          <string>退出到托盘</string>
+          <string>关闭到托盘</string>
          </property>
         </widget>
        </item>
@@ -106,17 +110,49 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QToolButton" name="toolButton_list">
+         <property name="contextMenuPolicy">
+          <enum>Qt::DefaultContextMenu</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/resources.qrc">
+           <normaloff>:/icon/menu.svg</normaloff>:/icon/menu.svg</iconset>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
    </item>
   </layout>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icon/exit.svg</normaloff>:/icon/exit.svg</iconset>
+   </property>
    <property name="text">
-    <string>退出</string>
+    <string>退出程序</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/image/jcr-logo.jpg</normaloff>:/image/jcr-logo.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>关于</string>
+   </property>
+   <property name="toolTip">
+    <string>关于</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

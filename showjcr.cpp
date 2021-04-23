@@ -8,8 +8,12 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::iconName = "jcr-logo.jpg"; //在程序自启动时，程序的运行目录是C:/WINDOWS/system32而不是程序目录，因此需要结合QApplication::applicationFilePath()修改
-const QString ShowJCR::datasetName = "jcr.db";
+const QString ShowJCR::version = "v2021-1.2";
+const QString ShowJCR::email = "hitfyd@foxmail.com";
+const QString ShowJCR::codeURL = "https://gitee.com/hitfyd/ShowJCR";
+const QString ShowJCR::updateURL = "https://gitee.com/hitfyd/ShowJCR/releases";
+const QString ShowJCR::logoIconName = ":/image/jcr-logo.jpg";
+const QString ShowJCR::datasetName = "jcr.db";  //数据集暂时无法使用资源文件；在程序自启动时，程序的运行目录是C:/WINDOWS/system32而不是程序目录，因此需要结合QApplication::applicationFilePath()修改
 const QString ShowJCR::defaultJournal = "National Science Review";
 
 ShowJCR::ShowJCR(QWidget *parent)
@@ -22,20 +26,27 @@ ShowJCR::ShowJCR(QWidget *parent)
     appName = QApplication::applicationName();//程序名称
     appDir = QDir(QApplication::applicationDirPath());//程序目录（QDir类型）
     appPath = QApplication::applicationFilePath();// 程序路径
-    QIcon icon(appDir.absoluteFilePath(iconName));
-    QApplication::setWindowIcon(icon);//设置程序图标
 
-    qDebug() << "start check:" << appName << appDir.path() << appPath << icon;
+    qDebug() << "start check:" << appName << appDir.path() << appPath;
+
+    //设置菜单
+    menu = new QMenu();
+    menu->addAction(ui->actionAbout);
+    menu->addSeparator();//添加分隔线
+    menu->addAction(ui->actionExit);
+    //关联托盘菜单响应
+    connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(show_about()));
+    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(OnExit()));
 
     //设置系统托盘
     m_systray.setToolTip(appName);//设置提示文字
-    m_systray.setIcon(icon);//设置托盘图标
-    QMenu * menu = new QMenu();
-    menu->addAction(ui->actionExit);
+    m_systray.setIcon(QIcon(logoIconName));//设置托盘图标
     m_systray.setContextMenu(menu);//托盘菜单项
     m_systray.show();//显示托盘
     connect(&m_systray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(OnSystemTrayClicked(QSystemTrayIcon::ActivationReason)));//关联托盘事件
-    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(OnExit()));//关联托盘菜单响应
+
+    //初始化关于窗口
+    aboutDialog = new AboutDialog(appName, version, email, codeURL, updateURL, this);
 
     //设置剪切板监听
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(getClipboard()));
@@ -72,14 +83,17 @@ ShowJCR::ShowJCR(QWidget *parent)
 
 ShowJCR::~ShowJCR()
 {
-    delete ui;
-    delete sqliteDB;
-
     //存储程序运行参数
     settings->setValue("autoStart", autoStart);
     settings->setValue("exit2Taskbar", exit2Taskbar);
     settings->setValue("monitorClipboard", monitorClipboard);
     settings->setValue("autoActivateWindow", autoActivateWindow);
+
+    delete menu;
+    delete aboutDialog;
+    delete ui;
+    delete sqliteDB;
+    delete settings;
 }
 
 void ShowJCR::on_pushButton_selectJournal_clicked()
@@ -215,4 +229,17 @@ void ShowJCR::on_lineEdit_journalName_textEdited(const QString &arg1)
     if(arg1.contains(cueWords[1])){
         ui->lineEdit_journalName->setText(arg1.split(cueWords[1]).last());
     }
+}
+
+void ShowJCR::on_toolButton_list_clicked()
+{
+    QPoint pos;
+    pos.setX(0);
+    pos.setY(ui->toolButton_list->sizeHint().height());
+    menu->exec(ui->toolButton_list->mapToGlobal(pos));
+}
+
+void ShowJCR::show_about()
+{
+    aboutDialog->show();
 }
