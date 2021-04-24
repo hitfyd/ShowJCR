@@ -88,7 +88,7 @@ private:
 
     //期刊信息
     QList<Pair> journalInfo;    //期刊详细信息
-//    QString journalName;    //期刊名称，用于输入和查询
+    QString journalName;    //期刊名称，用于输入和查询
 //    int year;   //中科院分区表升级版发布年份
 //    QString ISSN;   //国际标准连续出版物号（International Standard Serial Number，ISSN）
 //    QString review;    //是否为Review期刊
@@ -106,7 +106,7 @@ private:
     //输入检查，运行核心查询及更新功能
     void run(const QString &input);
     //更新界面显示的期刊信息
-    void updateGUI(const QString &journalName);
+    void updateGUI();
     //设置程序开机自启动（设置和移除）
     void setAutoStart();
     //重写closeEvent

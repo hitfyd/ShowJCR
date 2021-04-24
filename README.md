@@ -14,7 +14,9 @@
 
 中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，通过爬虫获取，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息。
 
-JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.com)，直接下载完整的JCR报告获取，但该报告不包含JCR分区信息，暂时还没有实现对JCR分区信息的爬虫，欢迎有能力的开发者参与或分享！（注：极少部分期刊没有JCR影响因子）
+JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.com)，直接下载完整的JCR报告获取，但该报告不包含JCR分区信息（注：极少部分期刊没有JCR影响因子）。
+
+JCR期刊分区信息、期刊缩写、年文章量来源于[Justscience](https://sci.justscience.cn/)。
 
 国际期刊预警等级来源于[《国际期刊预警名单（试行）》](https://mp.weixin.qq.com/s/xbyJFtR2lezv6CyRrkxsdA)，处理时删去了期刊的大类学科分区信息。
 
@@ -30,11 +32,11 @@ SQLite3创建"jcr.db"并进入到SQLite命令行：
 sqlite3 jcr.db
 ```
 
-在SQLite命令行中，将原始数据导入到"jcr.db"：
+在v2021-1.2及其之前版本，在SQLite命令行中，将原始数据导入到"jcr.db"：
 
 ```sqlite
 .separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
-.import FQBJCR2020-UTF8.csv fqb
+.import FQBJCR2020-UTF8.csv fqb	#必须最先导入
 .import JCR2019.csv jcr
 .import Warning.csv warning
 .import CCF2019-UTF8.csv ccf
@@ -42,10 +44,20 @@ sqlite3 jcr.db
 .import JCR2019extend-UTF8.csv jcrextend
 ```
 
+在v2021-1.3版本，原始数据进行合并，将FQBJCR2020和Warning信息合并一个表，CCF信息合并到一个表，JCR2019信息合并到一个表。修改后的导入逻辑为：
+
+```
+.separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
+.import FQBJCR2020+Warning-UTF8.csv fqb	#必须最先导入
+.import JCR2019-UTF8.csv jcr
+.import CCF2019-UTF8.csv ccf
+```
+
+
+
 ## 运行依赖
 
-1. **jcr-logo.jpg**，用于系统托盘图标；
-3. **jcr.db**，期刊信息数据库；
+1. **jcr.db**，期刊信息数据库；
 3. Qt相关依赖（使用windeployqt自动生成后可以裁剪）。
 
 ## 使用说明

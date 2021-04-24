@@ -15,11 +15,11 @@ public:
     explicit SqliteDB(const QDir &appDir, const QString &datasetName, QObject *parent = nullptr);
     ~SqliteDB();
     QStringList getAllJournalNames();   //  返回当前数据库中包含的所有有效期刊名称，用于输入联想和判断输入期刊名称是否正确
-    QList<Pair> getJournalInfo(const QString &journalName);
+    QList<Pair> getJournalInfo(const QString &journalName, bool allowSelectAgain = true);
 
 private:
     //临时逻辑：判断表字段是否包含“Journal”，包含则作为主键，同时如果表的第一个字段不是“Journal”，则第一个字段也作为主键
-    QString primaryKey = "Journal";
+    QString defaultPrimaryKeyValue = "Journal";
 
     QSqlDatabase database;
     QStringList tableNames;  // 存储数据库中所有表的名字

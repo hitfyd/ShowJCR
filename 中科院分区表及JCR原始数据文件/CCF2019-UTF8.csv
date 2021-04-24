@@ -1,22 +1,22 @@
-刊物简称,Journal,出版社,网址,领域,CCF推荐类别（国际学术刊物/会议）,CCF推荐类型
-TOPLAS,ACM Transactions on Programming Languages & Systems,ACM,http://dblp.uni-trier.de/db/journals/toplas/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,A类
+﻿刊物简称,Journal,出版社,网址,领域,CCF推荐类别（国际学术刊物/会议）,CCF推荐类型
+TOPLAS,ACM Transactions on Programming Languages and Systems,ACM,http://dblp.uni-trier.de/db/journals/toplas/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,A类
 TOSEM,ACM Transactions on Software Engineering and Methodology,ACM,http://dblp.uni-trier.de/db/journals/tosem/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,A类
 TSE,IEEE Transactions on Software Engineering,IEEE,http://dblp.uni-trier.de/db/journals/tse/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,A类
 ASE,Automated Software Engineering,Springer,http://dblp.uni-trier.de/db/journals/ase/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
 ESE,Empirical Software Engineering,Springer,http://dblp.uni-trier.de/db/journals/ese/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
-TSC,IEEE Transactions on Service Computing,IEEE,http://dblp.uni-trier.de/db/journals/tsc/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
+TSC,IEEE Transactions on Services Computing,IEEE,http://dblp.uni-trier.de/db/journals/tsc/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
 IETS,IET Software,IET,http://dblp.uni-trier.de/db/journals/iee/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
 IST,Information and Software Technology,Elsevier,http://dblp.uni-trier.de/db/journals/infsof/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
 JFP,Journal of Functional Programming,Cambridge University Press,http://dblp.uni-trier.de/db/journals/jfp/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
-,Journal of Software: Evolution and Process,Wiley,http://dblp.uni-trier.de/db/journals/smr/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
+,Journal of Software-Evolution and Process,Wiley,http://dblp.uni-trier.de/db/journals/smr/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
 JSS,Journal of Systems and Software,Elsevier,http://dblp.uni-trier.de/db/journals/jss/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
 RE,Requirements Engineering,Springer,http://dblp.uni-trier.de/db/journals/re/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
 SCP,Science of Computer Programming,Elsevier,http://dblp.uni-trier.de/db/journals/scp/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
-SoSyM,Software and System Modeling,Springer,http://dblp.uni-trier.de/db/journals/sosym/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
-STVR,"Software Testing, Verification and Reliability",Wiley,http://dblp.uni-trier.de/db/journals/stvr/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
-SPE,Software: Practice and Experience,Wiley,http://dblp.uni-trier.de/db/journals/spe/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
-CL,"Computer Languages, Systems and Structures",Elsevier,http://dblp.uni-trier.de/db/journals/cl/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
-IJSEKE,International Journal on Software Engineering and Knowledge Engineering,World Scientific,http://dblp.uni-trier.de/db/journals/ijseke/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
+SoSyM,Software and Systems Modeling,Springer,http://dblp.uni-trier.de/db/journals/sosym/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
+STVR,SOFTWARE TESTING VERIFICATION & RELIABILITY,Wiley,http://dblp.uni-trier.de/db/journals/stvr/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
+SPE,Software-practice & Experience,Wiley,http://dblp.uni-trier.de/db/journals/spe/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,B类
+CL,COMPUTER LANGUAGES SYSTEMS & STRUCTURES,Elsevier,http://dblp.uni-trier.de/db/journals/cl/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
+IJSEKE,INTERNATIONAL JOURNAL OF SOFTWARE ENGINEERING AND KNOWLEDGE ENGINEERING,World Scientific,http://dblp.uni-trier.de/db/journals/ijseke/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
 STTT,International Journal on Software Tools for Technology Transfer,Springer,http://dblp.uni-trier.de/db/journals/sttt/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
 JLAP,Journal of Logic and Algebraic Programming,Elsevier,http://dblp.uni-trier.de/db/journals/jlp/jlap.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
 JWE,Journal of Web Engineering,Rinton Press,http://dblp.uni-trier.de/db/journals/jwe/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
@@ -79,9 +79,9 @@ REFSQ,Requirements Engineering: Foundation for Software Quality,Springer,http://
 WICSA,Working IEEE/IFIP Conference on Software Architecture,IEEE,http://dblp.uni-trier.de/db/conf/wicsa/,软件工程/系统软件/程序设计语言,推荐国际学术会议,C类
 JSAC,IEEE Journal on Selected Areas in Communications,IEEE,http://dblp.uni-trier.de/db/journals/jsac/,计算机网络,推荐国际学术刊物,A类
 TMC,IEEE Transactions on Mobile Computing,IEEE,http://dblp.uni-trier.de/db/journals/tmc/,计算机网络,推荐国际学术刊物,A类
-TON,IEEE/ACM Transactions on Networking,IEEE/ACM,http://dblp.uni-trier.de/db/journals/ton/,计算机网络,推荐国际学术刊物,A类
+TON,IEEE-ACM TRANSACTIONS ON NETWORKING,IEEE/ACM,http://dblp.uni-trier.de/db/journals/ton/,计算机网络,推荐国际学术刊物,A类
 TOIT,ACM Transactions on Internet Technology,ACM,http://dblp.uni-trier.de/db/journals/toit/,计算机网络,推荐国际学术刊物,B类
-TOMCCAP,"ACM Transactions on Multimedia Computing, Communications and Applications",ACM,http://dblp.uni-trier.de/db/journals/tomccap/,计算机网络,推荐国际学术刊物,B类
+TOMCCAP,ACM Transactions on Multimedia Computing Communications and Applications,ACM,http://dblp.uni-trier.de/db/journals/tomccap/,计算机网络,推荐国际学术刊物,B类
 TOSN,ACM Transactions on Sensor Networks,ACM,http://dblp.uni-trier.de/db/journals/tosn/,计算机网络,推荐国际学术刊物,B类
 CN,Computer Networks,Elsevier,http://dblp.uni-trier.de/db/journals/cn/,计算机网络,推荐国际学术刊物,B类
 TCOM,IEEE Transactions on Communications,IEEE,http://dblp.uni-trier.de/db/journals/tcom/,计算机网络,推荐国际学术刊物,B类
@@ -142,9 +142,9 @@ TMM,IEEE Transactions on Multimedia,IEEE,http://dblp.uni-trier.de/db/journals/tm
 JASA,Journal of The Acoustical Society of America,AIP,http://scitation.aip.org/content/asa/journal/jasa,计算机图形学与多媒体,推荐国际学术刊物,B类
 SIIMS,SIAM Journal on Imaging Sciences,SIAM,http://dblp.uni-trier.de/db/journals/siamis/,计算机图形学与多媒体,推荐国际学术刊物,B类
 Speech Com,Speech Communication,Elsevier,http://dblp.uni-trier.de/db/journals/speech/,计算机图形学与多媒体,推荐国际学术刊物,B类
-CGTA,Computational Geometry: Theory and Applications,Elsevier,http://dblp.uni-trier.de/db/journals/comgeo/,计算机图形学与多媒体,推荐国际学术刊物,C类
+CGTA,COMPUTATIONAL GEOMETRY-THEORY AND APPLICATIONS,Elsevier,http://dblp.uni-trier.de/db/journals/comgeo/,计算机图形学与多媒体,推荐国际学术刊物,C类
 CAVW,Computer Animation and Virtual Worlds,Wiley,http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)1546-427X,计算机图形学与多媒体,推荐国际学术刊物,C类
-C&G,Computers & Graphics,Elsevier,http://dblp.uni-trier.de/db/journals/cg/,计算机图形学与多媒体,推荐国际学术刊物,C类
+C&G,COMPUTERS & GRAPHICS-UK,Elsevier,http://dblp.uni-trier.de/db/journals/cg/,计算机图形学与多媒体,推荐国际学术刊物,C类
 DCG,Discrete & Computational Geometry,Springer,http://dblp.uni-trier.de/db/journals/dcg/,计算机图形学与多媒体,推荐国际学术刊物,C类
 SPL,IEEE Signal Processing Letters,IEEE,http://dblp.uni-trier.de/db/journals/spl/,计算机图形学与多媒体,推荐国际学术刊物,C类
 IET-IPR,IET Image Processing,IET,http://dblp.uni-trier.de/db/journals/iet-ipr/,计算机图形学与多媒体,推荐国际学术刊物,C类
@@ -152,8 +152,8 @@ JVCIR,Journal of Visual Communication and Image Representation,Elsevier,http://d
 MS,Multimedia Systems,Springer,http://dblp.uni-trier.de/db/journals/mms/,计算机图形学与多媒体,推荐国际学术刊物,C类
 MTA,Multimedia Tools and Applications,Springer,http://dblp.uni-trier.de/db/journals/mta/,计算机图形学与多媒体,推荐国际学术刊物,C类
 ,Signal Processing,Elsevier,http://dblp.uni-trier.de/db/journals/sigpro/,计算机图形学与多媒体,推荐国际学术刊物,C类
-SPIC,Signal processing : image communication,Elsevier,http://dblp.uni-trier.de/db/journals/spic/,计算机图形学与多媒体,推荐国际学术刊物,C类
-TVC,The Visual Computer,Springer,http://dblp.uni-trier.de/db/journals/vc/,计算机图形学与多媒体,推荐国际学术刊物,C类
+SPIC,SIGNAL PROCESSING-IMAGE COMMUNICATION,Elsevier,http://dblp.uni-trier.de/db/journals/spic/,计算机图形学与多媒体,推荐国际学术刊物,C类
+TVC,VISUAL COMPUTER,Springer,http://dblp.uni-trier.de/db/journals/vc/,计算机图形学与多媒体,推荐国际学术刊物,C类
 ACM MM,ACM International Conference on Multimedia,ACM,http://dblp.uni-trier.de/db/conf/mm/,计算机图形学与多媒体,推荐国际学术会议,A类
 SIGGRAPH,ACM SIGGRAPH Annual Conference,ACM,http://dblp.uni-trier.de/db/conf/siggraph/index.html,计算机图形学与多媒体,推荐国际学术会议,A类
 VR,IEEE Virtual Reality,IEEE,http://dblp.uni-trier.de/db/conf/vr/,计算机图形学与多媒体,推荐国际学术会议,A类
@@ -184,9 +184,9 @@ MMM,International Conference on Multimedia Modeling,Springer,http://dblp.uni-tri
 PCM,Pacific-Rim Conference on Multimedia,Springer,http://dblp.uni-trier.de/db/conf/pcm/,计算机图形学与多媒体,推荐国际学术会议,C类
 SMI,Shape Modeling International,IEEE,http://dblp.uni-trier.de/db/conf/smi/,计算机图形学与多媒体,推荐国际学术会议,C类
 TOCHI,ACM Transactions on Computer-Human Interaction,ACM,http://dblp.uni-trier.de/db/journals/tochi/,人机交互与普适计算,推荐国际学术刊物,A类
-IJHCS,International Journal of Human Computer Studies,Elsevier,http://dblp.uni-trier.de/db/journals/ijmms/,人机交互与普适计算,推荐国际学术刊物,A类
-CSCW,Computer Supported Cooperative Work,Springer,http://dblp.uni-trier.de/db/journals/cscw/,人机交互与普适计算,推荐国际学术刊物,B类
-HCI,Human Computer Interaction,Taylor &Francis,http://dblp.uni-trier.de/db/journals/hhci/,人机交互与普适计算,推荐国际学术刊物,B类
+IJHCS,"	INTERNATIONAL JOURNAL OF HUMAN-COMPUTER STUDIES",Elsevier,http://dblp.uni-trier.de/db/journals/ijmms/,人机交互与普适计算,推荐国际学术刊物,A类
+CSCW,Computer Supported Cooperative Work-The Journal of Collaborative Computing and Work Practices,Springer,http://dblp.uni-trier.de/db/journals/cscw/,人机交互与普适计算,推荐国际学术刊物,B类
+HCI,Human-Computer Interaction,Taylor &Francis,http://dblp.uni-trier.de/db/journals/hhci/,人机交互与普适计算,推荐国际学术刊物,B类
 ,IEEE Transactions on Human-Machine Systems,IEEE,http://dblp.uni-trier.de/db/journals/thms/,人机交互与普适计算,推荐国际学术刊物,B类
 IWC,Interacting with Computers,Oxford University Press,http://dblp.uni-trier.de/db/journals/iwc/,人机交互与普适计算,推荐国际学术刊物,B类
 IJHCI,International Journal of Human-Computer Interaction,Taylor &Francis,http://dblp.uni-trier.de/db/journals/ijhci/,人机交互与普适计算,推荐国际学术刊物,B类
@@ -220,28 +220,28 @@ AVI,International Working Conference on Advanced Visual Interfaces,ACM,http://db
 TODS,ACM Transactions on Database Systems,ACM,http://dblp.uni-trier.de/db/journals/tods/,数据库/数据挖掘/内容检索,推荐国际学术刊物,A类
 TOIS,ACM Transactions on Information Systems,ACM,http://dblp.uni-trier.de/db/journals/tois/,数据库/数据挖掘/内容检索,推荐国际学术刊物,A类
 TKDE,IEEE Transactions on Knowledge and Data Engineering,IEEE,http://dblp.uni-trier.de/db/journals/tkde/,数据库/数据挖掘/内容检索,推荐国际学术刊物,A类
-VLDBJ,The VLDB Journal,Springer,http://dblp.uni-trier.de/db/journals/vldb/,数据库/数据挖掘/内容检索,推荐国际学术刊物,A类
+VLDBJ,VLDB JOURNAL,Springer,http://dblp.uni-trier.de/db/journals/vldb/,数据库/数据挖掘/内容检索,推荐国际学术刊物,A类
 TKDD,ACM Transactions on Knowledge Discovery from Data,ACM,http://dblp.uni-trier.de/db/journals/tkdd/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 TWEB,ACM Transactions on the Web,ACM,http://dblp.uni-trier.de/db/journals/tweb/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 AEI,Advanced Engineering Informatics,Elsevier,http://dblp.uni-trier.de/db/journals/aei/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
-DKE,Data and Knowledge Engineering,Elsevier,http://dblp.uni-trier.de/db/journals/dke/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
+DKE,DATA & KNOWLEDGE ENGINEERING,Elsevier,http://dblp.uni-trier.de/db/journals/dke/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 DMKD,Data Mining and Knowledge Discovery,Springer,http://dblp.uni-trier.de/db/journals/datamine/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 EJIS,European Journal of Information Systems,The OR Society,http://dblp.uni-trier.de/db/journals/ejis/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 ,GeoInformatica,Springer,http://dblp.uni-trier.de/db/journals/geoinformatica/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
-IPM,Information Processing and Management,Elsevier,http://dblp.uni-trier.de/db/journals/ipm/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
+IPM,Information Processing & Management,Elsevier,http://dblp.uni-trier.de/db/journals/ipm/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 ,Information Sciences,Elsevier,http://dblp.uni-trier.de/db/journals/isci/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 IS,Information Systems,Elsevier,http://dblp.uni-trier.de/db/journals/is/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
-JASIST,Journal of the American Society for Information Science and Technology,American Society for Information Science and Technology,http://dblp.uni-trier.de/db/journals/jasis/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
+JASIST,JOURNAL OF THE ASSOCIATION FOR INFORMATION SCIENCE AND TECHNOLOGY,American Society for Information Science and Technology,http://dblp.uni-trier.de/db/journals/jasis/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 JWS,Journal of Web Semantics,Elsevier,http://dblp.uni-trier.de/db/journals/ws/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 KAIS,Knowledge and Information Systems,Springer,http://dblp.uni-trier.de/db/journals/kais/,数据库/数据挖掘/内容检索,推荐国际学术刊物,B类
 DPD,Distributed and Parallel Databases,Springer,http://dblp.uni-trier.de/db/journals/dpd/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
-I&M,Information and Management,Elsevier,http://dblp.uni-trier.de/db/journals/iam/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
+I&M,Information & Management,Elsevier,http://dblp.uni-trier.de/db/journals/iam/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
 IPL,Information Processing Letters,Elsevier,http://dblp.uni-trier.de/db/journals/ipl/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
 IR,Information Retrieval Journal,Springer,http://dblp.uni-trier.de/db/journals/ir/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
 IJCIS,International Journal of Cooperative Information Systems,World Scientific,http://dblp.uni-trier.de/db/journals/ijcis/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
 IJGIS,International Journal of Geographical Information Science,Taylor & Francis,http://dblp.uni-trier.de/db/journals/gis/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
 IJIS,International Journal of Intelligent Systems,Wiley,http://dblp.uni-trier.de/db/journals/ijis/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
-IJKM,International Journal of Knowledge Management,IGI,http://dblp.uni-trier.de/db/journals/ijkm/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
+IJKM,International Journal on Knowledge Management,IGI,http://dblp.uni-trier.de/db/journals/ijkm/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
 IJSWIS,International Journal on Semantic Web and Information Systems,IGI,http://dblp.uni-trier.de/db/journals/ijswis/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
 JCIS,Journal of Computer Information Systems,IACIS,http://dblp.uni-trier.de/db/journals/jcis/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
 JDM,Journal of Database Management,IGI-Global,http://dblp.uni-trier.de/db/journals/jdm/,数据库/数据挖掘/内容检索,推荐国际学术刊物,C类
@@ -329,7 +329,7 @@ MFCS,Mathematical Foundations of Computer Science,Springer,http://dblp.uni-trier
 STACS,Symposium on Theoretical Aspects of Computer Science,Springer,http://dblp.uni-trier.de/db/conf/stacs/,计算机科学理论,推荐国际学术会议,C类
 TOCS,ACM Transactions on Computer Systems,ACM,http://dblp.uni-trier.de/db/journals/tocs/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,A类
 TOS,ACM Transactions on Storage,ACM,http://dblp.uni-trier.de/db/journals/tos/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,A类
-TCAD,IEEE Transactions On Computer-Aided Design Of Integrated Circuits And System,IEEE,http://dblp.uni-trier.de/db/journals/tcad/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,A类
+TCAD,IEEE Transactions On Computer-Aided Design Of Integrated Circuits And Systems,IEEE,http://dblp.uni-trier.de/db/journals/tcad/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,A类
 TC,IEEE Transactions on Computers,IEEE,http://dblp.uni-trier.de/db/journals/tc/index.html,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,A类
 TPDS,IEEE Transactions on Parallel and Distributed Systems,IEEE,http://dblp.uni-trier.de/db/journals/tpds/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,A类
 TACO,ACM Transactions on Architecture and Code Optimization,ACM,http://dblp.uni-trier.de/db/journals/taco/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
@@ -339,20 +339,20 @@ TECS,ACM Transactions on Embedded Computing Systems,ACM,http://dblp.uni-trier.de
 TRETS,ACM Transactions on Reconfigurable Technology and Systems,ACM,http://dblp.uni-trier.de/db/journals/trets/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
 TVLSI,IEEE Transactions on Very Large Scale Integration (VLSI) Systems,IEEE,http://dblp.uni-trier.de/db/journals/tvlsi/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
 JPDC,Journal of Parallel and Distributed Computing,Elsevier,http://dblp.uni-trier.de/db/journals/jpdc/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
-JSA,Journal of Systems Architecture: Embedded Software Design,Elsevier,http://dblp.uni-trier.de/db/journals/jsa/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
+JSA,Journal of Systems Architecture,Elsevier,http://dblp.uni-trier.de/db/journals/jsa/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
 PARCO,Parallel Computing,Elsevier,http://dblp.uni-trier.de/db/conf/parco/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
-,Performance Evaluation: An International Journal,Elsevier,http://www.journals.elsevier.com/performance-evaluation/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
+,Performance Evaluation,Elsevier,http://www.journals.elsevier.com/performance-evaluation/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,B类
 JETC,ACM Journal on Emerging Technologies in Computing Systems,ACM,http://dblp.uni-trier.de/db/journals/jetc/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
-,Concurrency and Computation: Practice and Experience,Wiley,http://dblp.uni-trier.de/db/journals/concurrency/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
+,CONCURRENCY AND COMPUTATION-PRACTICE & EXPERIENCE,Wiley,http://dblp.uni-trier.de/db/journals/concurrency/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
 DC,Distributed Computing,Springer,http://dblp.uni-trier.de/db/journals/dc/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
-FGCS,Future Generation Computer Systems,Elsevier,http://dblp.uni-trier.de/db/journals/fgcs/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
+FGCS,Future Generation Computer Systems-The International Journal of eScience,Elsevier,http://dblp.uni-trier.de/db/journals/fgcs/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
 TCC,IEEE Transactions on Cloud Computing,IEEE,https://dblp.uni-trier.de/db/journals/tcc/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
-Integration,"Integration, the VLSI Journal",Elsevier,http://dblp.uni-trier.de/db/journals/integration/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
+Integration,INTEGRATION-THE VLSI JOURNAL,Elsevier,http://dblp.uni-trier.de/db/journals/integration/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
 JETTA,Journal of Electronic Testing-Theory and Applications,Springer,http://link.springer.com/journal/10836,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
-JGC,The Journal of Grid computing,Springer,http://link.springer.com/journal/10723,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
-MICPRO,Microprocessors and Microsystems: Embedded Hardware Design,Elsevier,http://dblp.uni-trier.de/db/journals/mam/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
+JGC,Journal of Grid computing,Springer,http://link.springer.com/journal/10723,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
+MICPRO,Microprocessors and Microsystems,Elsevier,http://dblp.uni-trier.de/db/journals/mam/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
 RTS,Real-Time Systems,Springer,http://dblp.uni-trier.de/db/journals/rts/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
-TJSC,The Journal of Supercomputing,Springer,http://dblp.uni-trier.de/db/journals/tjs/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
+TJSC,Journal of Supercomputing,Springer,http://dblp.uni-trier.de/db/journals/tjs/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术刊物,C类
 PPoPP,ACM SIGPLAN Symposium on Principles & Practice of Parallel Programming,ACM,http://dblp.uni-trier.de/db/conf/ppopp/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术会议,A类
 FAST,Conference on File and Storage Technologies,USENIX,http://dblp.uni-trier.de/db/conf/fast/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术会议,A类
 DAC,Design Automation Conference,ACM,https://dblp.uni-trier.de/db/conf/dac/,计算机体系结构/并行与分布计算/存储系统,推荐国际学术会议,A类
@@ -419,15 +419,15 @@ TIFS,IEEE Transactions on Information Forensics and Security,IEEE,http://dblp.un
 ,Journal of Cryptology,Springer,http://dblp.uni-trier.de/db/journals/joc/,网络与信息安全,推荐国际学术刊物,A类
 TOPS,ACM Transactions on Privacy and Security,ACM,https://tops.acm.org/,网络与信息安全,推荐国际学术刊物,B类
 ,Computers & Security,Elsevier,http://dblp.uni-trier.de/db/journals/compsec/,网络与信息安全,推荐国际学术刊物,B类
-,"Designs, Codes and Cryptography",Springer,http://dblp.uni-trier.de/db/journals/dcc/,网络与信息安全,推荐国际学术刊物,B类
+,DESIGNS CODES AND CRYPTOGRAPHY,Springer,http://dblp.uni-trier.de/db/journals/dcc/,网络与信息安全,推荐国际学术刊物,B类
 JCS,Journal of Computer Security,IOS Press,http://dblp.uni-trier.de/db/journals/jcs/,网络与信息安全,推荐国际学术刊物,B类
-CLSR,Computer Law and Security Review,Elsevier,http://www.journals.elsevier.com/computer-law-and-security-review/,网络与信息安全,推荐国际学术刊物,C类
+CLSR,Computer Law & Security Review,Elsevier,http://www.journals.elsevier.com/computer-law-and-security-review/,网络与信息安全,推荐国际学术刊物,C类
 ,EURASIP Journal on Information Security,Springer,http://dblp.uni-trier.de/db/journals/ejisec/,网络与信息安全,推荐国际学术刊物,C类
 ,IET Information Security,IET,http://dblp.uni-trier.de/db/journals/iet-ifs/,网络与信息安全,推荐国际学术刊物,C类
 IMCS,Information Management & Computer Security,Emerald,http://dblp.uni-trier.de/db/journals/imcs/,网络与信息安全,推荐国际学术刊物,C类
 IJICS,International Journal of Information and Computer Security,Inderscience,http://dblp.uni-trier.de/db/journals/ijics/,网络与信息安全,推荐国际学术刊物,C类
 IJISP,International Journal of Information Security and Privacy,Idea Group Inc,http://dblp.uni-trier.de/db/journals/ijisp/,网络与信息安全,推荐国际学术刊物,C类
-JISA,Journal of Information Security and Application,Elsevier,http://dblp.uni-trier.de/db/journals/istr/,网络与信息安全,推荐国际学术刊物,C类
+JISA,Journal of Information Security and Applications,Elsevier,http://dblp.uni-trier.de/db/journals/istr/,网络与信息安全,推荐国际学术刊物,C类
 SCN,Security and Communication Networks,Wiley,http://dblp.uni-trier.de/db/journals/scn/,网络与信息安全,推荐国际学术刊物,C类
 CCS,ACM Conference on Computer and Communications Security,ACM,http://dblp.uni-trier.de/db/conf/ccs/,网络与信息安全,推荐国际学术会议,A类
 EUROCRYPT,European Cryptology Conference,Springer,http://dblp.uni-trier.de/db/conf/eurocrypt/,网络与信息安全,推荐国际学术会议,A类
@@ -471,7 +471,7 @@ SAC,Selected Areas in Cryptography,Springer,http://dblp.uni-trier.de/db/conf/sac
 SOUPS,Symposium On Usable Privacy and Security,ACM,http://dblp.uni-trier.de/db/conf/soups/,网络与信息安全,推荐国际学术会议,C类
 HotSec,USENIX Workshop on Hot Topics in Security,USENIX,http://www.usenix.org/events/,网络与信息安全,推荐国际学术会议,C类
 AI,Artificial Intelligence,Elsevier,http://dblp.uni-trier.de/db/journals/ai/,人工智能,推荐国际学术刊物,A类
-TPAMI,IEEE Trans on Pattern Analysis and Machine Intelligence,IEEE,http://dblp.uni-trier.de/db/journals/pami/,人工智能,推荐国际学术刊物,A类
+TPAMI,IEEE Transactions on Pattern Analysis and Machine Intelligence,IEEE,http://dblp.uni-trier.de/db/journals/pami/,人工智能,推荐国际学术刊物,A类
 IJCV,International Journal of Computer Vision,Springer,http://dblp.uni-trier.de/db/journals/ijcv/,人工智能,推荐国际学术刊物,A类
 JMLR,Journal of Machine Learning Research,MIT Press,http://dblp.uni-trier.de/db/journals/jmlr/,人工智能,推荐国际学术刊物,A类
 TAP,ACM Transactions on Applied Perception,ACM,http://dblp.uni-trier.de/db/journals/tap/,人工智能,推荐国际学术刊物,B类
@@ -479,10 +479,10 @@ TSLP,ACM Transactions on Speech and Language Processing,ACM,http://dblp.uni-trie
 AAMAS,Autonomous Agents and Multi-Agent Systems,Springer,http://dblp.uni-trier.de/db/journals/aamas/,人工智能,推荐国际学术刊物,B类
 ,Computational Linguistics,MIT Press,http://dblp.uni-trier.de/db/journals/coling/,人工智能,推荐国际学术刊物,B类
 CVIU,Computer Vision and Image Understanding,Elsevier,http://dblp.uni-trier.de/db/journals/cviu/,人工智能,推荐国际学术刊物,B类
-DKE,Data and Knowledge Engineering,Elsevier,http://dblp.uni-trier.de/db/journals/dke/index.html,人工智能,推荐国际学术刊物,B类
+DKE,DATA & KNOWLEDGE ENGINEERING,Elsevier,http://dblp.uni-trier.de/db/journals/dke/index.html,人工智能,推荐国际学术刊物,B类
 ,Evolutionary Computation,MIT Press,http://dblp.uni-trier.de/db/journals/ec/,人工智能,推荐国际学术刊物,B类
 TAC,IEEE Transactions on Affective Computing,IEEE,http://dblp.uni-trier.de/db/journals/taffco/,人工智能,推荐国际学术刊物,B类
-TASLP,"IEEE Transactions on Audio, Speech, and Language Processing",IEEE,http://dblp.uni-trier.de/db/journals/taslp/,人工智能,推荐国际学术刊物,B类
+TASLP,IEEE-ACM Transactions on Audio Speech and Language Processing,IEEE,http://dblp.uni-trier.de/db/journals/taslp/,人工智能,推荐国际学术刊物,B类
 ,IEEE Transactions on Cybernetics,IEEE,http://dblp.uni-trier.de/db/journals/tcyb/,人工智能,推荐国际学术刊物,B类
 TEC,IEEE Transactions on Evolutionary Computation,IEEE,http://dblp.uni-trier.de/db/journals/tec/,人工智能,推荐国际学术刊物,B类
 TFS,IEEE Transactions on Fuzzy Systems,IEEE,http://dblp.uni-trier.de/db/journals/tfs/,人工智能,推荐国际学术刊物,B类
@@ -490,7 +490,7 @@ TNNLS,IEEE Transactions on Neural Networks and learning systems,IEEE,http://dblp
 IJAR,International Journal of Approximate Reasoning,Elsevier,http://dblp.uni-trier.de/db/journals/ijar/,人工智能,推荐国际学术刊物,B类
 JAIR,Journal of Artificial Intelligence Research,AAAI,http://dblp.uni-trier.de/db/journals/jair/index.html,人工智能,推荐国际学术刊物,B类
 ,Journal of Automated Reasoning,Springer,http://dblp.uni-trier.de/db/journals/jar/,人工智能,推荐国际学术刊物,B类
-JSLHR,"Journal of Speech, Language, and Hearing Research",American Speech-Language Hearing Association,http://jslhr.pubs.asha.org/,人工智能,推荐国际学术刊物,B类
+JSLHR,JOURNAL OF SPEECH LANGUAGE AND HEARING RESEARCH,American Speech-Language Hearing Association,http://jslhr.pubs.asha.org/,人工智能,推荐国际学术刊物,B类
 ,Machine Learning,Springer,http://dblp.uni-trier.de/db/journals/ml/,人工智能,推荐国际学术刊物,B类
 ,Neural Computation,MIT Press,http://dblp.uni-trier.de/db/journals/neco/,人工智能,推荐国际学术刊物,B类
 ,Neural Networks,Elsevier,http://dblp.uni-trier.de/db/journals/nn/,人工智能,推荐国际学术刊物,B类
@@ -516,9 +516,9 @@ IJCIA,International Journal of Computational Intelligence and Applications,World
 IJIS,International Journal of Intelligent Systems,Wiley,http://dblp.uni-trier.de/db/journals/ijis/,人工智能,推荐国际学术刊物,C类
 IJNS,International Journal of Neural Systems,World Scientific,http://dblp.uni-trier.de/db/journals/ijns/,人工智能,推荐国际学术刊物,C类
 IJPRAI,International Journal of Pattern Recognition and Artificial Intelligence,World Scientific,http://dblp.uni-trier.de/db/journals/ijprai/,人工智能,推荐国际学术刊物,C类
-IJUFKS,"International Journal of Uncertainty, Fuzziness and Knowledge-Based System",World Scientific,https://dblp.uni-trier.de/db/journals/ijufks/,人工智能,推荐国际学术刊物,C类
+IJUFKS,INTERNATIONAL JOURNAL OF UNCERTAINTY FUZZINESS AND KNOWLEDGE-BASED SYSTEMS,World Scientific,https://dblp.uni-trier.de/db/journals/ijufks/,人工智能,推荐国际学术刊物,C类
 IJDAR,International Journal on Document Analysis and Recognition,Springer,http://dblp.uni-trier.de/db/journals/ijdar/,人工智能,推荐国际学术刊物,C类
-JETAI,Journal of Experimental and Theoretical Artificial Intelligence,Taylor & Francis,http://dblp.uni-trier.de/db/journals/jetai/,人工智能,推荐国际学术刊物,C类
+JETAI,Journal of Experimental & Theoretical Artificial Intelligence,Taylor & Francis,http://dblp.uni-trier.de/db/journals/jetai/,人工智能,推荐国际学术刊物,C类
 KBS,Knowledge-Based Systems,Elsevier,http://dblp.uni-trier.de/db/journals/kbs/,人工智能,推荐国际学术刊物,C类
 ,Machine Translation,Springer,http://dblp.uni-trier.de/db/journals/mt/,人工智能,推荐国际学术刊物,C类
 ,Machine Vision and Applications,Springer,http://dblp.uni-trier.de/db/journals/mva/,人工智能,推荐国际学术刊物,C类
@@ -575,7 +575,7 @@ JACM,Journal of the ACM,ACM,http://dblp.uni-trier.de/db/journals/jacm/,交叉/�
 Proc. IEEE,Proceedings of the IEEE,IEEE,http://dblp.uni-trier.de/db/journals/pieee/,交叉/综合/新兴,推荐国际学术刊物,A类
 ,Bioinformatics,Oxford University Press,http://dblp.uni-trier.de/db/journals/bioinformatics/,交叉/综合/新兴,推荐国际学术刊物,B类
 ,Briefings in Bioinformatics,Oxford University Press,http://dblp.uni-trier.de/db/journals/bib/,交叉/综合/新兴,推荐国际学术刊物,B类
-Cognition,Cognition：International Journal of Cognitive Science,Elsevier,http://www.journals.elsevier.com/cognition/,交叉/综合/新兴,推荐国际学术刊物,B类
+Cognition,Cognition,Elsevier,http://www.journals.elsevier.com/cognition/,交叉/综合/新兴,推荐国际学术刊物,B类
 TASAE,IEEE Transactions on Automation Science and Engineering,IEEE,http://dblp.uni-trier.de/db/journals/tase/,交叉/综合/新兴,推荐国际学术刊物,B类
 TGARS,IEEE Transactions on Geoscience and Remote Sensing,IEEE,http://dblp.uni-trier.de/db/journals/tgrs/,交叉/综合/新兴,推荐国际学术刊物,B类
 TITS,IEEE Transactions on Intelligent Transportation Systems,IEEE,http://dblp.uni-trier.de/db/journals/tits/,交叉/综合/新兴,推荐国际学术刊物,B类
@@ -585,9 +585,9 @@ TCBB,IEEE-ACM Transactions on Computational Biology and Bioinformatics,IEEE/ACM,
 JCST,Journal of Computer Science and Technology,SCIENCE PRESS,http://dblp.uni-trier.de/db/journals/jcst/,交叉/综合/新兴,推荐国际学术刊物,B类
 JAMIA,Journal of the American Medical Informatics Association,BMJ Journals,http://dblp.uni-trier.de/db/journals/jamia/,交叉/综合/新兴,推荐国际学术刊物,B类
 ,PLOS Computational Biology,Public Library of Science,http://dblp.uni-trier.de/db/journals/ploscb/,交叉/综合/新兴,推荐国际学术刊物,B类
-,Science China Information Sciences,Science in China Press /Springer,http://dblp.uni-trier.de/db/journals/chinaf/,交叉/综合/新兴,推荐国际学术刊物,B类
-,The Computer Journal,Oxford University Press,http://dblp.uni-trier.de/db/journals/cj/,交叉/综合/新兴,推荐国际学术刊物,B类
-,World Wide Web Journal,Springer,https://www.springer.com/journal/11280,交叉/综合/新兴,推荐国际学术刊物,B类
+,Science China-Information Sciences,Science in China Press /Springer,http://dblp.uni-trier.de/db/journals/chinaf/,交叉/综合/新兴,推荐国际学术刊物,B类
+,Computer Journal,Oxford University Press,http://dblp.uni-trier.de/db/journals/cj/,交叉/综合/新兴,推荐国际学术刊物,B类
+,WORLD WIDE WEB-INTERNET AND WEB INFORMATION SYSTEMS,Springer,https://www.springer.com/journal/11280,交叉/综合/新兴,推荐国际学术刊物,B类
 ,BMC Bioinformatics,BioMed Central,http://dblp.uni-trier.de/db/journals/bmcbi/,交叉/综合/新兴,推荐国际学术刊物,C类
 ,Cybernetics and Systems,Taylor & Francis,http://dblp.uni-trier.de/db/journals/cas/,交叉/综合/新兴,推荐国际学术刊物,C类
 FCS,Frontiers of Computer Science,Higher Education Press,http://dblp.uni-trier.de/db/journals/fcsc/,交叉/综合/新兴,推荐国际学术刊物,C类
@@ -611,3 +611,40 @@ APBC,Asia Pacific Bioinformatics Conference,BioMed Central,http://dblp.uni-trier
 SMC,"IEEE International Conference on Systems, Man, and Cybernetics",IEEE,https://dblp.uni-trier.de/db/conf/smc/,交叉/综合/新兴,推荐国际学术会议,C类
 COSIT,International Conference on Spatial Information Theory,ACM,http://dblp.uni-trier.de/db/conf/cosit/,交叉/综合/新兴,推荐国际学术会议,C类
 ISBRA,International Symposium on Bioinformatics Research and Applications,Springer,https://dblp.uni-trier.de/db/conf/isbra/,交叉/综合/新兴,推荐国际学术会议,C类
+,软件学报,中国科学院软件研究所 中国计算机学会,http://www.jos.org.cn,,推荐中文科技期刊,A类
+,计算机学报,中国计算机学会 中国科学院计算技术研究所,http://cjc.ict.ac.cn,,推荐中文科技期刊,A类
+,中国科学：信息科学,中国科学院 国家自然科学基金委员会,http://infocn.scichina.com,,推荐中文科技期刊,A类
+,计算机研究与发展,中国科学院计算技术研究所 中国计算机学会,http://crad.ict.ac.cn,,推荐中文科技期刊,A类
+,计算机辅助设计与图形学学报,中国计算机学会 中国科学院计算技术研究所,http://www.jcad.cn,,推荐中文科技期刊,A类
+,电子学报,中国电子学会,http://www.ejournal.org.cn,,推荐中文科技期刊,A类
+,自动化学报,中国自动化学会 中国科学院自动化研究所,http://www.aas.net.cn,,推荐中文科技期刊,A类
+,通信学报,中国通信学会,http://www.infocomm-journal.com/txxb/,,推荐中文科技期刊,B类
+,科学通报,中国科学院 国家自然科学基金委员会,http://engine.scichina.com/publisher/scp/journal/CSB/,,推荐中文科技期刊,B类
+,中文信息学报,中国中文信息学会 中国科学院软件研究所,http://jcip.cipsc.org.cn,,推荐中文科技期刊,B类
+,模式识别与人工智能,中国自动化学会 国家智能计算机研究开发中心 中国科学院合肥智能机械研究所,http://manu46.magtech.com.cn/Jweb_prai/,,推荐中文科技期刊,B类
+,信息安全学报,中国科学院信息工程研究所 科学出版社,http://jcs.iie.ac.cn,,推荐中文科技期刊,B类
+,中国图像图形学报,中国科学院遥感与数字地球研究所 中国图象图形学学会 北京应用物理与计算数字研究所,www.cjig.cn,,推荐中文科技期刊,B类
+,系统仿真学报,中国仿真学会 北京仿真中心,http://www.china-simulation.com/,,推荐中文科技期刊,B类
+,计算机科学,重庆西南信息有限公司,http://www.jsjkx.com,,推荐中文科技期刊,B类
+,小型微型计算机系统,中国科学院沈阳计算技术研究所,http://xwxt.sict.ac.cn,,推荐中文科技期刊,B类
+,计算机科学与探索,华北计算技术研究所,http://fcst.ceaj.org,,推荐中文科技期刊,B类
+,密码学报,中国密码学会,http://www.jcr.cacrnet.org.cn,,推荐中文科技期刊,B类
+,计算机工程与应用,华北计算技术研究所,http://cea.ceaj.org,,推荐中文科技期刊,C类
+,计算机工程与科学,国防科技大学计算机学院,http:// joces.nudt.edu.cn,,推荐中文科技期刊,C类
+,计算机应用,中国科学院成都分院 四川省计算机学会,http://www.joca.cn/,,推荐中文科技期刊,C类
+,计算机仿真,北京控制与电子技术研究所,http://compusimu.gnway.cc,,推荐中文科技期刊,C类
+,计算机系统应用,中国科学院软件研究所,http://www.c-s-a.org.cn,,推荐中文科技期刊,C类
+,计算机应用研究,四川省计算机研究院,http://www.arocmag.com/,,推荐中文科技期刊,C类
+,计算机应用与软件,上海市计算技术研究所 上海计算机软件技术开发中心,http://www.shcas.net/,,推荐中文科技期刊,C类
+,图学学报,中国图学学会,http://www.txxb.com.cn,,推荐中文科技期刊,C类
+,计算机工程,华东计算技术研究所 上海市计算机学会,http://www.ecice06.com,,推荐中文科技期刊,C类
+,计算机工程与设计,中国航天科工集团706所,http://www.china-ced.com/,,推荐中文科技期刊,C类
+,计算机集成制造系统,中国兵器工业集团公司第210研究所,http://www.cims-journal.cn,,推荐中文科技期刊,C类
+,计算机技术与发展,陕西省计算机学会,www.xactad.net,,推荐中文科技期刊,C类
+,数据分析与知识发现,中国科学院文献情报中心,www.infotech.ac.cn,,推荐中文科技期刊,C类
+,智能系统学报,中国人工智能学会 哈尔滨工程大学,http://tis.hrbeu.edu.cn/,,推荐中文科技期刊,C类
+,大数据,人民邮电出版社有限公司,http://www.j-bigdataresearch.com.cn/,,推荐中文科技期刊,C类
+,电子与信息学报,中国科学院电子学研究所 国家自然科学基金委员会信息科学部,http://jeit.ie.ac.cn/,,推荐中文科技期刊,C类
+,计算机与数字工程,中国船舶重工集团公司第709研究所,http://jsj.709journal.com,,推荐中文科技期刊,C类
+,网络与信息安全学报,人民邮电出版社,http://www.cjnis.com.cn/,,推荐中文科技期刊,C类
+,计算机教育,清华大学,http://www.jsjjy.com/,,推荐中文科技期刊,C类

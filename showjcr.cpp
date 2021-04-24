@@ -8,7 +8,7 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::version = "v2021-1.2";
+const QString ShowJCR::version = "v2021-1.3";
 const QString ShowJCR::email = "hitfyd@foxmail.com";
 const QString ShowJCR::codeURL = "https://gitee.com/hitfyd/ShowJCR";
 const QString ShowJCR::updateURL = "https://gitee.com/hitfyd/ShowJCR/releases";
@@ -64,7 +64,7 @@ ShowJCR::ShowJCR(QWidget *parent)
     ui->lineEdit_journalName->setCompleter(pCompleter);
 
     //使用默认期刊进行查询，设置界面初始默认显示
-    run(defaultJournal);
+//    run(defaultJournal);
 
     //读取程序运行参数
     settings = new QSettings(author, appName);
@@ -109,14 +109,19 @@ void ShowJCR::on_lineEdit_journalName_returnPressed()
 void ShowJCR::run(const QString &input)
 {
     //输入简化，首尾空格清除，中间空格均变为1个，便于剪切板复制不精确时有效性
-    QString journalName = input.simplified();
+    QString tempJournalName = input.simplified();
+    //忽略重复查询
+    if(journalName == tempJournalName){
+        return;
+    }
+    journalName = tempJournalName;
     //检查输入是否为空
     if(journalName.isEmpty()){
 //        ui->lineEdit_journalName->setText(cueWords[0]);
         return;
     }
-    //检查输入是否在期刊数据库中，不区分大小写
-    if(!sqliteDB->getAllJournalNames().contains(journalName, Qt::CaseInsensitive)){   //不区分大小写
+    //检查输入是否在期刊数据库中，不区分大小写；如果输入为带'.'的缩写，删除'.'后重新检查
+    if(!sqliteDB->getAllJournalNames().contains(journalName, Qt::CaseInsensitive) and !sqliteDB->getAllJournalNames().contains(journalName.remove('.'), Qt::CaseInsensitive)){   //不区分大小写
         if(!ui->lineEdit_journalName->text().contains(cueWords[1])){
             ui->lineEdit_journalName->setText(cueWords[1] + ui->lineEdit_journalName->text());
         }
@@ -125,10 +130,10 @@ void ShowJCR::run(const QString &input)
     //输入正确，执行查询
     qDebug() << "select the journal:" << journalName;
     journalInfo = sqliteDB->getJournalInfo(journalName);
-    updateGUI(journalName);
+    updateGUI();
 }
 
-void ShowJCR::updateGUI(const QString &journalName)
+void ShowJCR::updateGUI()
 {
     ui->tableView_journalInformation->setShowGrid(true);
     ui->tableView_journalInformation->setGridStyle(Qt::DashLine);

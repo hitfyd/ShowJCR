@@ -40,7 +40,7 @@ QStringList SqliteDB::getAllJournalNames()
     return allJournalNamesList;
 }
 
-QList<Pair> SqliteDB::getJournalInfo(const QString &journalName)
+QList<Pair> SqliteDB::getJournalInfo(const QString &journalName, bool allowSelectAgain)
 {
     Q_ASSERT(allJournalNamesList.contains(journalName, Qt::CaseInsensitive));
     Q_ASSERT(allKeyNames.size() == tablePrimaryKeys.size());
@@ -66,10 +66,10 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName)
                         Pair pair(fieldName, query.value(fieldName).toString());
                         //排除字段名称重复的数据
                         if(!journalInfoFieldNames.contains(pair.first)){
-                            //如果该字段是主键，则将主键数据放在最前面，用于后续判断是否需要二次查询
-                            if(pair.first == primaryKey)
-                                journalInfo.insert(0, pair);
-                            else
+//                            //如果该字段是主键，则将主键数据放在最前面，用于后续判断是否需要二次查询
+//                            if(pair.first == defaultPrimaryKeyValue)
+//                                journalInfo.insert(0, pair);
+//                            else
                                 journalInfo << pair;
                             journalInfoFieldNames << pair.first;
                         }
@@ -78,11 +78,11 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName)
             }
         }
     }
-    //查询输入不是期刊全称时，自动进行二次查询，显示完整信息
-    if(journalInfo.size() > 0 and journalInfo[0].first != primaryKey){
+    //查询输入不是期刊全称时，自动进行二次查询，显示完整信息;allowSelectAgain避免进入死循环
+    if(allowSelectAgain and journalInfo.size() > 0 and journalInfo[0].first != defaultPrimaryKeyValue){
         foreach(const Pair &info, journalInfo){
-            if(info.first == primaryKey){
-                journalInfo = getJournalInfo(info.second);
+            if(info.first == defaultPrimaryKeyValue){
+                journalInfo = getJournalInfo(info.second, false);
                 qInfo() << "auto select" << info.second;
                 break;
             }
@@ -125,12 +125,12 @@ void SqliteDB::setTablePrimaryKeys()
 
     for(int i = 0; i < tableNames.size(); i++){
 
-        Q_ASSERT(tableFields[i].contains(primaryKey));
+        Q_ASSERT(tableFields[i].contains(defaultPrimaryKeyValue));
 
-        if(tableFields[i].contains(primaryKey)){
-            tablePrimaryKeys << Pair(tableNames[i], primaryKey);
+        if(tableFields[i].contains(defaultPrimaryKeyValue)){
+            tablePrimaryKeys << Pair(tableNames[i], defaultPrimaryKeyValue);
         }
-        if(tableFields[i][0] != primaryKey){
+        if(tableFields[i][0] != defaultPrimaryKeyValue){
             tablePrimaryKeys << Pair(tableNames[i], tableFields[i][0]);
         }
     }
