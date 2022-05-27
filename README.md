@@ -16,7 +16,7 @@
 
 JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.com)，直接下载完整的JCR报告获取，但该报告不包含JCR分区信息（注：极少部分期刊没有JCR影响因子）。
 
-JCR期刊分区信息、期刊缩写、年文章量来源于[Justscience](https://sci.justscience.cn/)。
+~~JCR期刊分区信息、期刊缩写、年文章量来源于[Justscience](https://sci.justscience.cn/)。~~（2021版暂时没有JCR分区信息）
 
 国际期刊预警等级来源于[《国际期刊预警名单（试行）》](https://mp.weixin.qq.com/s/xbyJFtR2lezv6CyRrkxsdA)，处理时删去了期刊的大类学科分区信息。
 
@@ -46,10 +46,19 @@ sqlite3 jcr.db
 
 在v2021-1.3版本，原始数据进行合并，将FQBJCR2020和Warning信息合并一个表，CCF信息合并到一个表，JCR2019信息合并到一个表。修改后的导入逻辑为：
 
-```
+```sqlite
 .separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
 .import FQBJCR2020+Warning-UTF8.csv fqb	#必须最先导入
 .import JCR2019-UTF8.csv jcr
+.import CCF2019-UTF8.csv ccf
+```
+
+在v2022-1.0版本，导入逻辑类似于v2021-1.3版本（也可以使用[DB Browser for SQLite](https://sqlitebrowser.org/)工具手动导入）：
+
+```sqlite
+.separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
+.import FQBJCR2021+Warning-UTF8.csv fqb	#必须最先导入
+.import JCR2020-UTF8.csv jcr
 .import CCF2019-UTF8.csv ccf
 ```
 

@@ -8,7 +8,7 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::version = "v2021-1.3";
+const QString ShowJCR::version = "v2022-1.0";
 const QString ShowJCR::email = "hitfyd@foxmail.com";
 const QString ShowJCR::codeURL = "https://gitee.com/hitfyd/ShowJCR";
 const QString ShowJCR::updateURL = "https://gitee.com/hitfyd/ShowJCR/releases";

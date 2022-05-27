@@ -14,12 +14,11 @@
    <font>
     <family>微软雅黑</family>
     <pointsize>8</pointsize>
-    <weight>75</weight>
     <bold>true</bold>
    </font>
   </property>
   <property name="windowTitle">
-   <string>中科院分区表升级版2020</string>
+   <string>中科院分区表升级版2021</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources/resources.qrc">
@@ -43,7 +42,6 @@
           <font>
            <family>微软雅黑</family>
            <pointsize>10</pointsize>
-           <weight>75</weight>
            <italic>true</italic>
            <bold>true</bold>
           </font>
@@ -65,7 +63,6 @@
         <font>
          <family>微软雅黑</family>
          <pointsize>8</pointsize>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
