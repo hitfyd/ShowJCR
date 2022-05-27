@@ -18,7 +18,7 @@ JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.
 
 ~~JCR期刊分区信息、期刊缩写、年文章量来源于[Justscience](https://sci.justscience.cn/)。~~（2021版暂时没有JCR分区信息）
 
-国际期刊预警等级来源于[《国际期刊预警名单（试行）》](https://mp.weixin.qq.com/s/xbyJFtR2lezv6CyRrkxsdA)，处理时删去了期刊的大类学科分区信息。
+国际期刊预警等级来源于[《国际预警期刊名单》](https://earlywarning.fenqubiao.com/)，处理时删去了期刊的大类学科分区信息。
 
 中国计算机学会（CCF）[推荐国际学术会议和期刊目录](https://www.ccf.org.cn/Academic_Evaluation/By_category/)，[推荐中文科技期刊目录](https://www.ccf.org.cn/ccftjgjxskwml/)。
 
@@ -29,6 +29,7 @@ JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.
 SQLite3创建"jcr.db"并进入到SQLite命令行：
 
 ```sqlite
+chcp 65001	#切换Windows命令行编码为UTF-8
 sqlite3 jcr.db
 ```
 
