@@ -10,13 +10,18 @@
 
 针对上述需求，为了科研人员更方便直观的获取国际学术期刊影响力评价，因此在2020年中科院分区表升级版的基础之上，补充展示了期刊影响因子和国际期刊预警等级。
 
+## 可执行版本
+
+提供两种可执行版本：
+
+1. ShowJCR.7z，解压到任意目录下执行ShowJCR.exe；
+2. ShowJCR.exe，使用[Enigma Virtual Box ](http://www.enigmaprotector.com/)对所有依赖执行封包，单一程序即可独立执行。
+
 ## 数据来源
 
-中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，通过爬虫获取，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息。
+中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息。
 
-JCR期刊影响因子来源于[https://jcr.clarivate.com](https://jcr.clarivate.com)，直接下载完整的JCR报告获取，但该报告不包含JCR分区信息（注：极少部分期刊没有JCR影响因子）。
-
-~~JCR期刊分区信息、期刊缩写、年文章量来源于[Justscience](https://sci.justscience.cn/)。~~（2021版暂时没有JCR分区信息）
+JCR期刊影响因子更新到2021版（2022年6月28日发布），并保留2020年的影响因子。
 
 国际期刊预警等级来源于[《国际预警期刊名单》](https://earlywarning.fenqubiao.com/)，处理时删去了期刊的大类学科分区信息。
 
@@ -63,7 +68,7 @@ sqlite3 jcr.db
 .import CCF2019-UTF8.csv ccf
 ```
 
-
+在v2022-1.1版本，使用[DB Browser for SQLite](https://sqlitebrowser.org/)工具对数据集进行修改。
 
 ## 运行依赖
 
