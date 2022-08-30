@@ -10,70 +10,33 @@
 
 针对上述需求，为了科研人员更方便直观的获取国际学术期刊影响力评价，因此在2020年中科院分区表升级版的基础之上，补充展示了期刊影响因子和国际期刊预警等级。
 
-## 可执行版本
-
-提供两种可执行版本：
-
-1. ShowJCR.7z，解压到任意目录下执行ShowJCR.exe；
-2. ShowJCR.exe，使用[Enigma Virtual Box ](http://www.enigmaprotector.com/)对所有依赖执行封包，单一程序即可独立执行。
-
 ## 数据来源
 
 中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息。
 
 JCR期刊影响因子更新到2021版（2022年6月28日发布），并保留2020年的影响因子。
 
-国际期刊预警等级来源于[《国际预警期刊名单》](https://earlywarning.fenqubiao.com/)，处理时删去了期刊的大类学科分区信息。
+国际期刊预警等级来源于[《国际预警期刊名单》（2020、2021年）](https://earlywarning.fenqubiao.com/)，处理时删去了期刊的大类学科分区信息。
 
-中国计算机学会（CCF）[推荐国际学术会议和期刊目录](https://www.ccf.org.cn/Academic_Evaluation/By_category/)，[推荐中文科技期刊目录](https://www.ccf.org.cn/ccftjgjxskwml/)。
+中国计算机学会（CCF）[推荐国际学术会议和期刊目录（2019年）](https://www.ccf.org.cn/Academic_Evaluation/By_category/)，[推荐中文科技期刊目录（2019年）](https://www.ccf.org.cn/ccftjgjxskwml/)，[计算领域高质量科技期刊分级目录（2022年）](https://www.ccf.org.cn/ccftjgjxskwml/)。
 
 ### SQLite3数据库生成步骤
 
 国际期刊信息的原始数据随附在源代码中。
 
-SQLite3创建"jcr.db"并进入到SQLite命令行：
-
-```sqlite
-chcp 65001	#切换Windows命令行编码为UTF-8
-sqlite3 jcr.db
-```
-
-在v2021-1.2及其之前版本，在SQLite命令行中，将原始数据导入到"jcr.db"：
-
-```sqlite
-.separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
-.import FQBJCR2020-UTF8.csv fqb	#必须最先导入
-.import JCR2019.csv jcr
-.import Warning.csv warning
-.import CCF2019-UTF8.csv ccf
-.import CCFChinese2019-UTF8.csv ccfchinese
-.import JCR2019extend-UTF8.csv jcrextend
-```
-
-在v2021-1.3版本，原始数据进行合并，将FQBJCR2020和Warning信息合并一个表，CCF信息合并到一个表，JCR2019信息合并到一个表。修改后的导入逻辑为：
-
-```sqlite
-.separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
-.import FQBJCR2020+Warning-UTF8.csv fqb	#必须最先导入
-.import JCR2019-UTF8.csv jcr
-.import CCF2019-UTF8.csv ccf
-```
-
-在v2022-1.0版本，导入逻辑类似于v2021-1.3版本（也可以使用[DB Browser for SQLite](https://sqlitebrowser.org/)工具手动导入）：
-
-```sqlite
-.separator ','	#设置','为数据分隔符，否则导入csv数据时sqlite无法区分列
-.import FQBJCR2021+Warning-UTF8.csv fqb	#必须最先导入
-.import JCR2020-UTF8.csv jcr
-.import CCF2019-UTF8.csv ccf
-```
-
-在v2022-1.1版本，使用[DB Browser for SQLite](https://sqlitebrowser.org/)工具对数据集进行修改。
+使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv原始数据的导入顺序为FQBJCR2021、CCF2019、CCFChinese2019、CCFT2022、JCR2021、JCR2020。
 
 ## 运行依赖
 
 1. **jcr.db**，期刊信息数据库；
-3. Qt相关依赖（使用windeployqt自动生成后可以裁剪）。
+2. Qt相关依赖（使用windeployqt自动生成后可以裁剪）。
+
+## 可执行版本
+
+提供两种可执行版本：
+
+1. ShowJCR.7z，解压到任意目录下执行ShowJCR.exe；
+2. ShowJCR.exe，使用[Enigma Virtual Box ](http://www.enigmaprotector.com/)对所有依赖执行封包，单一程序即可独立执行。
 
 ## 使用说明
 

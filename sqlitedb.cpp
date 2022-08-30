@@ -57,21 +57,18 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName, bool allowSelec
                 if (!query.exec(select)){
                     qWarning() << "Error: Failed to select " << table << __FUNCTION__ << database.lastError();
                 }
-                if (query.first()){
+                //CCF推荐期刊中不同领域存在重复的期刊
+                while (query.next()){
                     QStringList fieldNames = tableFields[tableNames.indexOf(table)];
                     foreach(const QString &fieldName, fieldNames){
                         QString value = query.value(fieldName).toString();
                         if(value.isEmpty() || value.isNull())
                             continue;
-                        Pair pair(fieldName, query.value(fieldName).toString());
-                        //排除字段名称重复的数据
-                        if(!journalInfoFieldNames.contains(pair.first)){
-//                            //如果该字段是主键，则将主键数据放在最前面，用于后续判断是否需要二次查询
-//                            if(pair.first == defaultPrimaryKeyValue)
-//                                journalInfo.insert(0, pair);
-//                            else
-                                journalInfo << pair;
-                            journalInfoFieldNames << pair.first;
+                        //排除字段名称重复的数据，主要是避免defaultPrimaryKeyValue（Jouranl字段）重复出现
+                        if(!journalInfoFieldNames.contains(fieldName) || fieldName != defaultPrimaryKeyValue){
+                            Pair pair(fieldName, query.value(fieldName).toString());
+                            journalInfo << pair;
+                            journalInfoFieldNames << fieldName;
                         }
                     }
                 }
