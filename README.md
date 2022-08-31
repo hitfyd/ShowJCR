@@ -24,14 +24,40 @@ JCR期刊影响因子更新到2021版（2022年6月28日发布），并保留202
 
 国际期刊信息的原始数据随附在源代码中。
 
-使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv原始数据的导入顺序为FQBJCR2021、CCF2019、CCFChinese2019、CCFT2022、JCR2021、JCR2020。
+使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv格式原始数据的导入顺序为FQBJCR2021、CCF2019、CCFChinese2019、CCFT2022、JCR2021、JCR2020。
 
-## 运行依赖
+### 导入新的分区信息
+
+导入新的分区信息，只需要在jcr.db增加相应的数据表，无需修改程序源代码。
+
+分区信息可以处理为csv格式，作为新的数据表使用[DB Browser for SQLite](https://sqlitebrowser.org/)导入到jcr.db（包含在源代码和可执行版本ShowJCR.7z中）。
+
+新的分区信息表的字段格式可以是两种形式：
+
+1. 表第一个数据字段为“Journal”，例如
+
+   | Journal                  | ISSN      | IF(2021) |
+   | ------------------------ | --------- | -------- |
+   | PROCEEDINGS OF THE  IEEE | 0018-9219 | 14.91    |
+   | ······                   | ······    | ······   |
+
+2. 表第一个数据字段为其他检索关键字（比如“期刊简称”、“中文刊名”等），第二个数据字段为为“Journal”，例如
+
+   | 刊物简称   | Journal                 | 领域           | CCF推荐类型 |
+   | ---------- | ----------------------- | -------------- | ----------- |
+   | Proc. IEEE | Proceedings of the IEEE | 交叉/综合/新兴 | A类         |
+   | ······     | ······                  | ······         | ······      |
+
+数据表的设计核心是必须包含“Journal”字段，该字段是程序默认的搜索字段；如果“Journal”不是数据表的第一个字段，则该字段之前的字段也将被增加为搜索字段，其字段数据也可以在程序中查询。
+
+## Release发布版
+
+### 运行依赖
 
 1. **jcr.db**，期刊信息数据库；
 2. Qt相关依赖（使用windeployqt自动生成后可以裁剪）。
 
-## 可执行版本
+### 可执行版本
 
 提供两种可执行版本：
 
