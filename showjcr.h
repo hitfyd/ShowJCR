@@ -58,6 +58,7 @@ private:
     static const QString email;
     static const QString codeURL;
     static const QString updateURL;
+    static const QString windowTitile;
     static const QString logoIconName;//程序图标名称（路径）
     static const QString datasetName;//数据库名称（路径）
     static const QString defaultJournal;//默认的查询期刊名称
