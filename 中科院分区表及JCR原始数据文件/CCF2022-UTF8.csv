@@ -104,7 +104,7 @@ KBS,Knowledge-Based Systems,2022,Elsevier,http://dblp.uni-trier.de/db/journals/k
 ,Machine Vision and Applications,2022,Springer,http://dblp.uni-trier.de/db/journals/mva/,人工智能,推荐国际学术刊物,C类
 ,Natural Computing,2022,Springer,http://dblp.uni-trier.de/db/journals/nc/,人工智能,推荐国际学术刊物,C类
 NLE,Natural Language Engineering,2022,Cambridge University,http://dblp.uni-trier.de/db/journals/nle/,人工智能,推荐国际学术刊物,C类
-NCA,Neural Computing and Applications,2022,Springer,http://dblp.uni-trier.de/db/journals/nca/,人工智能,推荐国际学术刊物,C类
+NCA,Neural Computing & Applications,2022,Springer,http://dblp.uni-trier.de/db/journals/nca/,人工智能,推荐国际学术刊物,C类
 NPL,Neural Processing Letters,2022,Springer,http://dblp.uni-trier.de/db/journals/npl/,人工智能,推荐国际学术刊物,C类
 ,Neurocomputing,2022,Elsevier,http://dblp.uni-trier.de/db/journals/ijon/,人工智能,推荐国际学术刊物,C类
 PAA,Pattern Analysis and Applications,2022,Springer,http://dblp.uni-trier.de/db/journals/paa/,人工智能,推荐国际学术刊物,C类
@@ -587,8 +587,8 @@ JWE,Journal of Web Engineering,2022,Rinton Press,http://dblp.uni-trier.de/db/jou
 SOCA,Service Oriented Computing and Applications,2022,Springer,http://dblp.uni-trier.de/db/journals/soca/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
 SQJ,Software Quality Journal,2022,Springer,http://dblp.uni-trier.de/db/journals/sqj/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
 TPLP,Theory and Practice of Logic Programming,2022,Cambridge University Press,http://dblp.uni-trier.de/db/journals/tplp/,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
-PACM PL,Proceedings of the ACM on Programming Languages,2022,ACM,https://dblp.org/db/journals/pacmpl/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
-PLDI,ACM SIGPLAN Conference on Programming Language Design and  Implementation,2022,ACM,http://dblp.uni-trier.de/db/conf/pldi/,软件工程/系统软件/程序设计语言,推荐国际学术会议,A类
+PACMPL,Proceedings of the ACM on Programming Languages-PACMPL,2022,ACM,https://dblp.org/db/journals/pacmpl/index.html,软件工程/系统软件/程序设计语言,推荐国际学术刊物,C类
+PLDI,ACM SIGPLAN Conference on Programming Language Design and Implementation,2022,ACM,http://dblp.uni-trier.de/db/conf/pldi/,软件工程/系统软件/程序设计语言,推荐国际学术会议,A类
 POPL,ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages,2022,ACM,http://dblp.uni-trier.de/db/conf/popl/,软件工程/系统软件/程序设计语言,推荐国际学术会议,A类
 FSE/ESEC,ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering,2022,ACM,http://dblp.uni-trier.de/db/conf/sigsoft/,软件工程/系统软件/程序设计语言,推荐国际学术会议,A类
 SOSP,ACM Symposium on Operating Systems Principles,2022,ACM,http://dblp.uni-trier.de/db/conf/sosp/,软件工程/系统软件/程序设计语言,推荐国际学术会议,A类
