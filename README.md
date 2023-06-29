@@ -14,17 +14,17 @@
 
 中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息，升级到2022年版，并保留2021年版作为对比。
 
-JCR期刊影响因子更新到2021版（2022年6月28日发布），并保留2020年的影响因子。
+JCR期刊影响因子和分区更新到2022版（2023年6月28日发布），并保留2021年、2020年的影响因子。
 
 国际期刊预警等级来源于[《国际预警期刊名单》（2020、2021、2023年）](https://earlywarning.fenqubiao.com/)，处理时删去了期刊的大类学科分区信息。
 
-中国计算机学会（CCF）[推荐国际学术会议和期刊目录（2019年）](https://www.ccf.org.cn/Academic_Evaluation/By_category/)，[推荐中文科技期刊目录（2019年）](https://www.ccf.org.cn/ccftjgjxskwml/)，[计算领域高质量科技期刊分级目录（2022年）](https://www.ccf.org.cn/ccftjgjxskwml/)。CCF2022年版推荐国际学术会议和期刊目录在公示后尚未正式发布，将在正式发布后进行补充。
+中国计算机学会（CCF）[推荐国际学术会议和期刊目录（2022年）](https://www.ccf.org.cn/Academic_Evaluation/By_category/)，[计算领域高质量科技期刊分级目录（2022年）](https://www.ccf.org.cn/ccftjgjxskwml/)。
 
 ### SQLite3数据库生成步骤
 
 国际期刊信息的原始数据随附在源代码中。
 
-使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv格式原始数据的导入顺序（jcr.db中的表名）为JCR2021、JCR2020、 GJQKYJMD2023、GJQKYJMD2021、GJQKYJMD2020、CCF2019、CCFChinese2019、CCFT2022、FQBJCR2022、FQBJCR2021。
+使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv格式原始数据的导入顺序（jcr.db中的表名）为JCR2022、JCR2021、JCR2020、 GJQKYJMD2023、GJQKYJMD2021、GJQKYJMD2020、FQBJCR2022、FQBJCR2021、CCF2022、CCFT2022。
 
 ### 导入新的分区信息
 
