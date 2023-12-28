@@ -12,7 +12,7 @@
 
 ## 数据来源
 
-中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息，升级到2022年版，并保留2021年版作为对比。
+中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息，最新为2023年版（2023年12月27日发布），并保留2022年版、2021年版作为对比。
 
 JCR期刊影响因子和分区更新到2022版（2023年6月28日发布），并保留2021年、2020年的影响因子。
 
@@ -24,7 +24,7 @@ JCR期刊影响因子和分区更新到2022版（2023年6月28日发布），并
 
 国际期刊信息的原始数据随附在源代码中。
 
-使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv格式原始数据的导入顺序（jcr.db中的表名）为JCR2022、JCR2021、JCR2020、 GJQKYJMD2023、GJQKYJMD2021、GJQKYJMD2020、FQBJCR2022、FQBJCR2021、CCF2022、CCFT2022。
+使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv格式原始数据的导入顺序（jcr.db中的表名）为JCR2022、JCR2021、JCR2020、 GJQKYJMD2023、GJQKYJMD2021、GJQKYJMD2020、CCF2022、CCFT2022、FQBJCR2023、FQBJCR2022、FQBJCR2021。
 
 ### 导入新的分区信息
 
