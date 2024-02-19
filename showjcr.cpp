@@ -8,11 +8,11 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::version = "v2023-1.5";
+const QString ShowJCR::version = "v2024-1.0";
 const QString ShowJCR::email = "hitfyd@foxmail.com";
 const QString ShowJCR::codeURL = "https://github.com/hitfyd/ShowJCR";
 const QString ShowJCR::updateURL = "https://github.com/hitfyd/ShowJCR/releases";
-const QString ShowJCR::windowTitile = tr("中科院分区表升级版2023");
+const QString ShowJCR::windowTitile = tr("中科院分区表升级版2024");
 const QString ShowJCR::logoIconName = ":/image/jcr-logo.jpg";
 const QString ShowJCR::datasetName = "jcr.db";  //数据集暂时无法使用资源文件；在程序自启动时，程序的运行目录是C:/WINDOWS/system32而不是程序目录，因此需要结合QApplication::applicationFilePath()修改
 const QString ShowJCR::defaultJournal = "National Science Review";
