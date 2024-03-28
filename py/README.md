@@ -14,4 +14,5 @@ dependancy (see [requirements.txt])
 
 screenshots
 
-[!menu.png]
+![](screenshot.png)
+
