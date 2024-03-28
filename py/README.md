@@ -1,5 +1,5 @@
 # a simple python script to search keywords and display data
-
+# able to run in any OS with python (MacOS, Linux, Windows,...)
 
 how to use
 ```
