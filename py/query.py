@@ -20,7 +20,7 @@ from simple_term_menu import TerminalMenu
 #load data into proper format, prepare menu
 def init():
     print("""
-    ShowJCR, modified by Weilei Zeng, Mar 28, 2024
+    ShowJCR, Mar 28, 2024
     """)
     df=pd.read_csv(data_file)
     col='IF(2022)'
@@ -54,7 +54,10 @@ def run(df,journal_list,terminal_menu):
     elif menu_entry_indice==0:
         journal=input('enter the journal name...')
         print(journal)
-        r=process.extract(journal, journal_list, limit=10)
+        r=process.extract(journal, journal_list, limit=6)
+#        print(r)
+#        for _ in r:
+#            print(_)
         targets=[_[0] for _ in r ]
 #        page_break()
         print(df.loc[ df['Journal'].isin( targets) ])
