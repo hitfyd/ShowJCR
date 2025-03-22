@@ -9,6 +9,7 @@
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
 #include <QDir>
+#include <QColor>
 #include <aboutdialog.h>
 
 QT_BEGIN_NAMESPACE
@@ -52,6 +53,9 @@ private slots:
 private:
     //系统提示语
     const QString cueWords[2] = {"请输入期刊名称！", "请检查期刊名称！"};
+    //强调颜色
+    const QColor color_header = QColor(119, 136, 153);  //lightslategray
+    const QColor color_highlight = QColor(240, 128, 128);   //lightcoral
     //软件常量，包括作者信息、资源文件路径等
     static const QString author;
     static const QString version;

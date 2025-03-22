@@ -8,7 +8,7 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::version = "v2025-1.0";
+const QString ShowJCR::version = "v2025-1.1";
 const QString ShowJCR::email = "hitfyd@foxmail.com";
 const QString ShowJCR::codeURL = "https://github.com/hitfyd/ShowJCR";
 const QString ShowJCR::updateURL = "https://github.com/hitfyd/ShowJCR/releases";
@@ -149,16 +149,16 @@ void ShowJCR::updateGUI()
         value_item = new QStandardItem(journalInfo[i].second);
         // 设置分割线
         if(journalInfo[i].first.contains("年份")){
-            key_item->setData(QColor(Qt::lightGray), Qt::BackgroundRole);
-            value_item->setData(QColor(Qt::lightGray), Qt::BackgroundRole);
+            key_item->setBackground(color_header);
+            value_item->setBackground(color_header);
         }
         // 重要条目设置底色
         if(journalInfo[i].first.contains("IF(2023)") or journalInfo[i].first.contains("IF Quartile(2023)") or
             journalInfo[i].first.contains("CCF推荐类型") or journalInfo[i].first.contains("预警") or
             journalInfo[i].first.contains("大类分区") or journalInfo[i].first.contains("Top") or
             journalInfo[i].first.contains("标注")){
-            key_item->setBackground(QColor(Qt::yellow));
-            value_item->setBackground(QColor(Qt::yellow));
+            key_item->setBackground(color_highlight);
+            value_item->setBackground(color_highlight);
         }
         model->setItem(i, 0, key_item);
         model->setItem(i, 1, value_item);
