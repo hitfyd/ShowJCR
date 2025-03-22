@@ -64,7 +64,7 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName, bool allowSelec
                         QString value = query.value(fieldName).toString();
                         if(value.isEmpty() || value.isNull())
                             continue;
-                        //排除字段名称重复的数据，主要是避免defaultPrimaryKeyValue（Jouranl字段）重复出现
+                        //排除字段名称重复的数据，主要是避免defaultPrimaryKeyValue（Journal字段）重复出现
                         if(!journalInfoFieldNames.contains(fieldName) || fieldName != defaultPrimaryKeyValue){
                             Pair pair(fieldName, query.value(fieldName).toString());
                             journalInfo << pair;

@@ -8,11 +8,11 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::version = "v2024-1.1";
+const QString ShowJCR::version = "v2025-1.0";
 const QString ShowJCR::email = "hitfyd@foxmail.com";
 const QString ShowJCR::codeURL = "https://github.com/hitfyd/ShowJCR";
 const QString ShowJCR::updateURL = "https://github.com/hitfyd/ShowJCR/releases";
-const QString ShowJCR::windowTitile = tr("中科院分区表升级版2024");
+const QString ShowJCR::windowTitile = tr("中科院分区表升级版2025");
 const QString ShowJCR::logoIconName = ":/image/jcr-logo.jpg";
 const QString ShowJCR::datasetName = "jcr.db";  //数据集暂时无法使用资源文件；在程序自启动时，程序的运行目录是C:/WINDOWS/system32而不是程序目录，因此需要结合QApplication::applicationFilePath()修改
 const QString ShowJCR::defaultJournal = "National Science Review";
@@ -142,12 +142,26 @@ void ShowJCR::updateGUI()
     ui->tableView_journalInformation->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     QStandardItemModel* model = new QStandardItemModel();
-    QStandardItem* item = 0;
+    QStandardItem* key_item = 0;
+    QStandardItem* value_item = 0;
     for(int i = 0; i < journalInfo.size(); i++){
-        item = new QStandardItem(journalInfo[i].first);
-        model->setItem(i, 0, item);
-        item = new QStandardItem(journalInfo[i].second);
-        model->setItem(i, 1, item);
+        key_item = new QStandardItem(journalInfo[i].first);
+        value_item = new QStandardItem(journalInfo[i].second);
+        // 设置分割线
+        if(journalInfo[i].first.contains("年份")){
+            key_item->setData(QColor(Qt::lightGray), Qt::BackgroundRole);
+            value_item->setData(QColor(Qt::lightGray), Qt::BackgroundRole);
+        }
+        // 重要条目设置底色
+        if(journalInfo[i].first.contains("IF(2023)") or journalInfo[i].first.contains("IF Quartile(2023)") or
+            journalInfo[i].first.contains("CCF推荐类型") or journalInfo[i].first.contains("预警") or
+            journalInfo[i].first.contains("大类分区") or journalInfo[i].first.contains("Top") or
+            journalInfo[i].first.contains("标注")){
+            key_item->setBackground(QColor(Qt::yellow));
+            value_item->setBackground(QColor(Qt::yellow));
+        }
+        model->setItem(i, 0, key_item);
+        model->setItem(i, 1, value_item);
     }
 
     ui->tableView_journalInformation->setModel(model);
