@@ -36,8 +36,11 @@ set(PROJECT_SOURCES
         sqlitedb.h
         aboutdialog.cpp
         aboutdialog.h
+        tableselectordialog.h
+        tableselectordialog.cpp
         showjcr.ui
         aboutdialog.ui
+        tableselectordialog.ui
 )
 set(app_WINRC resources/logo.rc)
 set(qrc_SOURCES resources/resources.qrc)
@@ -47,6 +50,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         ${app_WINRC}
         ${qrc_SOURCES}
+
     )
 else()
     if(ANDROID)

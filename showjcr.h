@@ -11,6 +11,7 @@
 #include <QDir>
 #include <QColor>
 #include <aboutdialog.h>
+#include <tableselectordialog.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ShowJCR; }
@@ -48,11 +49,13 @@ private slots:
 
     void on_toolButton_list_clicked();
 
+    void show_selectTable();
+
     void show_about();
 
 private:
     //系统提示语
-    const QString cueWords[2] = {"请输入期刊名称！", "请检查期刊名称！"};
+    const QString cueWords[3] = {"请输入期刊名称！", "请检查期刊名称！", "请至少选择一个表！"};
     //强调颜色
     const QColor color_header = QColor(119, 136, 153);  //lightslategray
     const QColor color_highlight = QColor(240, 128, 128);   //lightcoral
@@ -76,6 +79,7 @@ private:
 
     QMenu * menu;//菜单
     QSystemTrayIcon m_systray;//系统托盘
+    TableSelectorDialog *selectTableDialog;//数据表选择窗口
     AboutDialog *aboutDialog;//关于窗口
 
     //程序运行参数
@@ -84,6 +88,7 @@ private:
     bool exit2Taskbar = false;  //是否退出到任务栏
     bool monitorClipboard = false;  //是否监听剪切板
     bool autoActivateWindow = false;    //查询成功后是否激活到前台显示，用于根据剪切板查询成功后显示
+    QStringList selectedTables;
 
 //    //期刊分区信息结构体
 //    struct Division{

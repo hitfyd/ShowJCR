@@ -8,7 +8,7 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::version = "v2025-1.1";
+const QString ShowJCR::version = "v2025-1.2";
 const QString ShowJCR::email = "hitfyd@foxmail.com";
 const QString ShowJCR::codeURL = "https://github.com/hitfyd/ShowJCR";
 const QString ShowJCR::updateURL = "https://github.com/hitfyd/ShowJCR/releases";
@@ -33,10 +33,12 @@ ShowJCR::ShowJCR(QWidget *parent)
 
     //设置菜单
     menu = new QMenu();
+    menu->addAction(ui->actionSelectTable);
     menu->addAction(ui->actionAbout);
     menu->addSeparator();//添加分隔线
     menu->addAction(ui->actionExit);
     //关联托盘菜单响应
+    connect(ui->actionSelectTable, SIGNAL(triggered()), this, SLOT(show_selectTable()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(show_about()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(OnExit()));
 
@@ -47,9 +49,6 @@ ShowJCR::ShowJCR(QWidget *parent)
     m_systray.show();//显示托盘
     connect(&m_systray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(OnSystemTrayClicked(QSystemTrayIcon::ActivationReason)));//关联托盘事件
 
-    //初始化关于窗口
-    aboutDialog = new AboutDialog(appName, version, email, codeURL, updateURL, this);
-
     //设置剪切板监听
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(getClipboard()));
 
@@ -58,12 +57,6 @@ ShowJCR::ShowJCR(QWidget *parent)
 
     //设置期刊名称输入框提示文字
     ui->lineEdit_journalName->setPlaceholderText(cueWords[0]);
-
-    //设置期刊输入自动联想
-    QCompleter *pCompleter=new QCompleter(sqliteDB->getAllJournalNames(),this);
-    pCompleter->setFilterMode(Qt::MatchContains);    //部分内容匹配
-    pCompleter->setCaseSensitivity(Qt::CaseInsensitive);    //设置为大小写不敏感
-    ui->lineEdit_journalName->setCompleter(pCompleter);
 
     //使用默认期刊进行查询，设置界面初始默认显示
 //    run(defaultJournal);
@@ -78,6 +71,23 @@ ShowJCR::ShowJCR(QWidget *parent)
     ui->checkBox_exit2Taskbar->setChecked(exit2Taskbar);
     ui->checkBox_monitorClipboard->setChecked(monitorClipboard);
     ui->checkBox_autoActivateWindow->setChecked(autoActivateWindow);
+    selectedTables = settings->value("selectedTables").toStringList();
+    if(selectedTables.isEmpty()){
+        selectedTables = sqliteDB->allTableNames;
+    }
+    sqliteDB->selectTableNames(selectedTables);
+
+    //设置期刊输入自动联想
+    QCompleter *pCompleter=new QCompleter(sqliteDB->getAllJournalNames(),this);
+    pCompleter->setFilterMode(Qt::MatchContains);    //部分内容匹配
+    pCompleter->setCaseSensitivity(Qt::CaseInsensitive);    //设置为大小写不敏感
+    ui->lineEdit_journalName->setCompleter(pCompleter);
+
+    //初始化数据集选择窗口
+    selectTableDialog = new TableSelectorDialog(sqliteDB->allTableNames, selectedTables, this);
+
+    //初始化关于窗口
+    aboutDialog = new AboutDialog(appName, version, email, codeURL, updateURL, this);
 
     //检查程序自启动设置是否有效
     setAutoStart();
@@ -90,6 +100,7 @@ ShowJCR::~ShowJCR()
     settings->setValue("exit2Taskbar", exit2Taskbar);
     settings->setValue("monitorClipboard", monitorClipboard);
     settings->setValue("autoActivateWindow", autoActivateWindow);
+    settings->setValue("selectedTables", selectedTables);
 
     delete menu;
     delete aboutDialog;
@@ -112,10 +123,10 @@ void ShowJCR::run(const QString &input)
 {
     //输入简化，首尾空格清除，中间空格均变为1个，便于剪切板复制不精确时有效性
     QString tempJournalName = input.simplified();
-    //忽略重复查询
-    if(journalName == tempJournalName){
-        return;
-    }
+    // //忽略重复查询
+    // if(journalName == tempJournalName){
+    //     return;
+    // }
     journalName = tempJournalName;
     //检查输入是否为空
     if(journalName.isEmpty()){
@@ -258,6 +269,31 @@ void ShowJCR::on_toolButton_list_clicked()
     pos.setX(0);
     pos.setY(ui->toolButton_list->sizeHint().height());
     menu->exec(ui->toolButton_list->mapToGlobal(pos));
+}
+
+//选择需要查询的表后，更新查询信息、当前查询结果和期刊输入自动联想
+void ShowJCR::show_selectTable()
+{
+    // selectTableDialog->show();
+    if(selectTableDialog->exec() == QDialog::Accepted) {
+        selectedTables = selectTableDialog->selectedTables();
+        if(selectedTables.isEmpty()){
+            ui->lineEdit_journalName->setText(cueWords[2]);
+            return;
+        }
+        sqliteDB->selectTableNames(selectedTables);
+        run(ui->lineEdit_journalName->text());
+        // 删除旧completer
+        QCompleter *old = ui->lineEdit_journalName->completer();
+        if (old) {
+            old->deleteLater();
+        }
+        //设置期刊输入自动联想
+        QCompleter *pCompleter=new QCompleter(sqliteDB->getAllJournalNames(),this);
+        pCompleter->setFilterMode(Qt::MatchContains);    //部分内容匹配
+        pCompleter->setCaseSensitivity(Qt::CaseInsensitive);    //设置为大小写不敏感
+        ui->lineEdit_journalName->setCompleter(pCompleter);
+    }
 }
 
 void ShowJCR::show_about()

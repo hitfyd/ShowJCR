@@ -4,6 +4,8 @@
 #include <QtSql/QSqlError>
 #include <QMessageBox>
 #include <QApplication>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *parent) : QObject(parent)
 {
@@ -22,10 +24,10 @@ SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *pare
         qDebug() << "Successed to connect database.";
     }
 
-    selectTableNames();
-    selectTableFields();
-    setTablePrimaryKeys();
-    selectAllJournalNames();
+    allTableNames = database.tables();
+    // 重排表名顺序
+    allTableNames = sortSpecialStrings(allTableNames);
+    selectTableNames(allTableNames);
 }
 
 SqliteDB::~SqliteDB()
@@ -88,14 +90,19 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName, bool allowSelec
     return journalInfo;
 }
 
-void SqliteDB::selectTableNames()
+void SqliteDB::selectTableNames(const QStringList &selectedtableNames)
 {
-    tableNames = database.tables();
-//    qDebug() << tableNames;
+    tableNames = selectedtableNames;
+    // qDebug() << allTableNames;
+    // qDebug() << tableNames;
+    selectTableFields();
+    setTablePrimaryKeys();
+    selectAllJournalNames();
 }
 
 void SqliteDB::selectTableFields()
 {
+    tableFields.clear();
     QSqlQuery query;
     foreach(const QString &table, tableNames){
         QStringList fieldNames;
@@ -118,6 +125,7 @@ void SqliteDB::selectTableFields()
 
 void SqliteDB::setTablePrimaryKeys()
 {
+    tablePrimaryKeys.clear();
     Q_ASSERT(tableNames.size() == tableFields.size());
 
     for(int i = 0; i < tableNames.size(); i++){
@@ -138,6 +146,8 @@ void SqliteDB::setTablePrimaryKeys()
 
 void SqliteDB::selectAllJournalNames()
 {
+    allKeyNames.clear();
+    allJournalNamesList.clear();
     QSqlQuery query;
     foreach(const Pair &pair, tablePrimaryKeys){
         const QString &table = pair.first;
@@ -177,3 +187,55 @@ void SqliteDB::selectAllJournalNames()
 
     Q_ASSERT(allKeyNames.size() == tablePrimaryKeys.size());
 }
+
+// 按照优先级重新排序表名
+QStringList SqliteDB::sortSpecialStrings(const QStringList &input) {
+    struct StringItem {
+        QString original;  // 原始字符串
+        QString prefix;    // 提取的前缀
+        int year = 0;      // 提取的年份
+        int priority = 0;  // 前缀优先级
+    };
+    // 定义前缀优先级规则
+    const QHash<QString, int> kPrefixPriority = {
+        {"GJQKYJMD", 0},
+        {"JCR", 1},
+        {"CCF", 2},
+        {"CCFT", 3},
+        {"FQBJCR", 4}
+    };
+    // 正则表达式提取前缀和年份
+    const QRegularExpression kPattern("^(\\D+)(\\d+)$"); // 非数字部分+数字部分
+    // 解析所有字符串
+    QList<StringItem> items;
+    for (const QString &s : input) {
+        QRegularExpressionMatch match = kPattern.match(s);
+        if (match.hasMatch()) {
+            StringItem item;
+            item.original = s;
+            item.prefix = match.captured(1);
+            item.year = match.captured(2).toInt();
+            item.priority = kPrefixPriority.value(item.prefix, INT_MAX); // 未定义前缀设为最低优先级
+            items.append(item);
+        } else {
+            // 无法解析的项放在末尾
+            items.append({s, s, 0, INT_MAX});
+        }
+    }
+    // 自定义排序规则
+    std::sort(items.begin(), items.end(), [](const StringItem &a, const StringItem &b) {
+        // 1. 按前缀优先级升序
+        if (a.priority != b.priority) return a.priority < b.priority;
+        // 2. 相同前缀按年份降序
+        if (a.year != b.year) return a.year > b.year;
+        // 3. 年份相同按原始字符串升序（可选）
+        return a.original < b.original;
+    });
+    // 提取排序后的结果
+    QStringList result;
+    for (const auto &item : items) {
+        result << item.original;
+    }
+    return result;
+}
+

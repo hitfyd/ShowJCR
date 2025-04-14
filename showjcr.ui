@@ -67,7 +67,7 @@
         </font>
        </property>
        <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
+        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
        </property>
        <attribute name="horizontalHeaderVisible">
         <bool>false</bool>
@@ -110,7 +110,7 @@
        <item>
         <widget class="QToolButton" name="toolButton_list">
          <property name="contextMenuPolicy">
-          <enum>Qt::DefaultContextMenu</enum>
+          <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
          </property>
          <property name="text">
           <string/>
@@ -145,6 +145,17 @@
    </property>
    <property name="toolTip">
     <string>关于</string>
+   </property>
+  </action>
+  <action name="actionSelectTable">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::EditSelectAll"/>
+   </property>
+   <property name="text">
+    <string>选择数据表</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
    </property>
   </action>
  </widget>
