@@ -14,16 +14,17 @@ class SqliteDB : public QObject
 public:
     explicit SqliteDB(const QDir &appDir, const QString &datasetName, QObject *parent = nullptr);
     ~SqliteDB();
+    QStringList getAllTableNames();     //  返回当前数据库中包含的所有表的名字
     QStringList getAllJournalNames();   //  返回当前数据库中包含的所有有效期刊名称，用于输入联想和判断输入期刊名称是否正确
     QList<Pair> getJournalInfo(const QString &journalName, bool allowSelectAgain = true);
     void selectTableNames(const QStringList &tableNames);    //  更新需要查询的表名称，存储在tableNames中
-    QStringList allTableNames;  // 存储数据库中所有表的名字
 
 private:
     //临时逻辑：判断表字段是否包含“Journal”，包含则作为主键，同时如果表的第一个字段不是“Journal”，则第一个字段也作为主键
     QString defaultPrimaryKeyValue = "Journal";
 
     QSqlDatabase database;
+    QStringList allTableNames;  // 存储数据库中所有表的名字
     QStringList tableNames;  // 需要查询的表名称
     QList<QStringList> tableFields;  // 存储表对应的字段名称，存储顺序和tableNames一一对应
     QList<Pair> tablePrimaryKeys;    // 存储表（Key）及其对应的主键字段名称(T)，注意一个表可能不止一个主键

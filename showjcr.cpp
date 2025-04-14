@@ -73,7 +73,7 @@ ShowJCR::ShowJCR(QWidget *parent)
     ui->checkBox_autoActivateWindow->setChecked(autoActivateWindow);
     selectedTables = settings->value("selectedTables").toStringList();
     if(selectedTables.isEmpty()){
-        selectedTables = sqliteDB->allTableNames;
+        selectedTables = sqliteDB->getAllTableNames();
     }
     sqliteDB->selectTableNames(selectedTables);
 
@@ -84,7 +84,7 @@ ShowJCR::ShowJCR(QWidget *parent)
     ui->lineEdit_journalName->setCompleter(pCompleter);
 
     //初始化数据集选择窗口
-    selectTableDialog = new TableSelectorDialog(sqliteDB->allTableNames, selectedTables, this);
+    selectTableDialog = new TableSelectorDialog(sqliteDB->getAllTableNames(), selectedTables, this);
 
     //初始化关于窗口
     aboutDialog = new AboutDialog(appName, version, email, codeURL, updateURL, this);

@@ -27,7 +27,7 @@ SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *pare
     allTableNames = database.tables();
     // 重排表名顺序
     allTableNames = sortSpecialStrings(allTableNames);
-    selectTableNames(allTableNames);
+    //selectTableNames(allTableNames);	//避免启动时执行两次
 }
 
 SqliteDB::~SqliteDB()
@@ -35,6 +35,11 @@ SqliteDB::~SqliteDB()
     if(database.isOpen()){
         database.close();
     }
+}
+
+QStringList SqliteDB::getAllTableNames()
+{
+    return allTableNames;
 }
 
 QStringList SqliteDB::getAllJournalNames()
