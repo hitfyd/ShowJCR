@@ -1,3 +1,5 @@
+# 从v2025-1.2版升级的用户，如果默认没有显示JCR2024信息，请在程序右下角设置——》选择数据表——》勾选”JCR2024“
+
 # ShowJCR
 
 ## 前言
@@ -14,7 +16,7 @@
 
 中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息，最新为2025年版（2025年3月20日发布），并保留2023年版、2022年版作为对比。
 
-JCR期刊影响因子和分区更新到2023版（2024年6月20日发布），并保留2022年影响因子和分区、2021年影响因子和2020年的影响因子。
+JCR期刊影响因子和分区更新到2024版（2025年6月18日发布），并保留2023年、2022年影响因子和分区。
 
 国际期刊预警等级来源于[《国际预警期刊名单》（2020、2021、2023、2024、2025年）](https://ewl.fenqubiao.com/#/README)，2024年版不再区分预警等级而改为预警原因。
 
@@ -24,7 +26,7 @@ JCR期刊影响因子和分区更新到2023版（2024年6月20日发布），并
 
 国际期刊信息的原始数据随附在源代码中。
 
-使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv格式原始数据的导入顺序（jcr.db中的表名）为JCR2023、JCR2022、JCR2021、JCR2020、GJQKYJMD2025、GJQKYJMD2024、GJQKYJMD2023、GJQKYJMD2021、GJQKYJMD2020、CCF2022、CCFT2022、FQBJCR2025、FQBJCR2023、FQBJCR2022。
+使用[DB Browser for SQLite](https://sqlitebrowser.org/)创建jcr.db，csv格式原始数据的导入顺序（jcr.db中的表名）为JCR2024、JCR2023、JCR2022、GJQKYJMD2025、GJQKYJMD2024、GJQKYJMD2023、GJQKYJMD2021、GJQKYJMD2020、CCF2022、CCFT2022、FQBJCR2025、FQBJCR2023、FQBJCR2022。
 
 ### 导入新的分区信息
 

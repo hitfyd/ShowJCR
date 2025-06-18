@@ -8,7 +8,7 @@
 #include <QMenu>
 
 const QString ShowJCR::author = "hitfyd";
-const QString ShowJCR::version = "v2025-1.2";
+const QString ShowJCR::version = "v2025-1.3";
 const QString ShowJCR::email = "hitfyd@foxmail.com";
 const QString ShowJCR::codeURL = "https://github.com/hitfyd/ShowJCR";
 const QString ShowJCR::updateURL = "https://github.com/hitfyd/ShowJCR/releases";
@@ -71,9 +71,18 @@ ShowJCR::ShowJCR(QWidget *parent)
     ui->checkBox_exit2Taskbar->setChecked(exit2Taskbar);
     ui->checkBox_monitorClipboard->setChecked(monitorClipboard);
     ui->checkBox_autoActivateWindow->setChecked(autoActivateWindow);
-    selectedTables = settings->value("selectedTables").toStringList();
-    if(selectedTables.isEmpty()){
+    QStringList old_selectedTables = settings->value("selectedTables").toStringList();
+    if(old_selectedTables.isEmpty()){
         selectedTables = sqliteDB->getAllTableNames();
+    }
+    else{
+        //检查选择的数据表与数据库中数据表的一致性，避免数据库升级时删除了一些表
+        selectedTables.clear();
+        for (const QString &item : sqliteDB->getAllTableNames()) {
+            if (old_selectedTables.contains(item)) {
+                selectedTables.append(item);
+            }
+        }
     }
     sqliteDB->selectTableNames(selectedTables);
 
@@ -164,7 +173,7 @@ void ShowJCR::updateGUI()
             value_item->setBackground(color_header);
         }
         // 重要条目设置底色
-        if(journalInfo[i].first.contains("IF(2023)") or journalInfo[i].first.contains("IF Quartile(2023)") or
+        if(journalInfo[i].first.contains("IF Quartile") or
             journalInfo[i].first.contains("CCF推荐类型") or journalInfo[i].first.contains("预警") or
             journalInfo[i].first.contains("大类分区") or journalInfo[i].first.contains("Top") or
             journalInfo[i].first.contains("标注")){
