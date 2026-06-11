@@ -4,7 +4,6 @@
 #include "sqlitedb.h"
 
 #include <QWidget>
-#include <QClipboard>
 #include <QSettings>
 #include <QSystemTrayIcon>
 #include <QCloseEvent>

@@ -1,5 +1,6 @@
 #include "showjcr.h"
 #include "./ui_showjcr.h"
+#include <QClipboard>
 #include <QMessageBox>
 #include <QStandardItemModel>
 #include <QStandardItem>

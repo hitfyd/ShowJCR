@@ -11,6 +11,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -flto -ffunction-sections -fdata-sections")
+set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--gc-sections -flto")
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -flto -s")  # -s = strip
+
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
 # They need to be set before the find_package( ...) calls below.
