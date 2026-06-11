@@ -83,3 +83,16 @@ target_compile_definitions(ShowJCR PRIVATE
 set_source_files_properties(sqlite3.c PROPERTIES COMPILE_FLAGS "-w")
 
 target_link_libraries(ShowJCR PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+
+# ============================================================
+# 部署目标: cmake --build . --target deploy
+# 运行 windeployqt 并清理冗余文件（Qt6Network、触摸插件、OpenGL软件渲染器等）
+# ============================================================
+add_custom_target(deploy
+    COMMAND "${CMAKE_COMMAND}"
+        -DEXE_PATH="$<TARGET_FILE:ShowJCR>"
+        -DQT_BIN_DIR="$<TARGET_FILE_DIR:Qt6::Core>"
+        -P "${CMAKE_SOURCE_DIR}/deploy.cmake"
+    COMMENT "Deploying ShowJCR with minimal dependencies..."
+    DEPENDS ShowJCR
+)
