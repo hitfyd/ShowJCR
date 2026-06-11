@@ -4,7 +4,10 @@
 #include <QObject>
 #include <QDir>
 #include <QMultiMap>
-#include <QtSql/QSqlDatabase>
+
+extern "C" {
+#include "sqlite3.h"
+}
 
 typedef QPair<QString, QString> Pair;
 
@@ -23,7 +26,7 @@ private:
     //临时逻辑：判断表字段是否包含“Journal”，包含则作为主键，同时如果表的第一个字段不是“Journal”，则第一个字段也作为主键
     QString defaultPrimaryKeyValue = "Journal";
 
-    QSqlDatabase database;
+    sqlite3 *db = nullptr;
     QStringList allTableNames;  // 存储数据库中所有表的名字
     QStringList tableNames;  // 需要查询的表名称
     QList<QStringList> tableFields;  // 存储表对应的字段名称，存储顺序和tableNames一一对应

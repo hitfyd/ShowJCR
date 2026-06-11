@@ -1,30 +1,71 @@
 #include "sqlitedb.h"
 
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
+#include <cstring>
 #include <QMessageBox>
 #include <QApplication>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
+extern "C" {
+#include "sqlite3.h"
+}
+
+// Helper: find column index by name (returns -1 if not found)
+static int columnIndex(sqlite3_stmt *stmt, const char *name) {
+    int count = sqlite3_column_count(stmt);
+    for (int i = 0; i < count; i++) {
+        if (std::strcmp(sqlite3_column_name(stmt, i), name) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Helper: safely get column text, returning empty QString for NULL
+static QString columnText(sqlite3_stmt *stmt, int idx) {
+    if (sqlite3_column_type(stmt, idx) == SQLITE_NULL) {
+        return QString();
+    }
+    return QString::fromUtf8(
+        reinterpret_cast<const char*>(sqlite3_column_text(stmt, idx))
+    );
+}
+
 SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *parent) : QObject(parent)
 {
     //连接SQLite3数据库"jcr.db"，该数据集应放在运行目录下
-    database = QSqlDatabase::addDatabase("QSQLITE");
-    database.setDatabaseName(appDir.absoluteFilePath(datasetName));
-    database.setConnectOptions("QSQLITE_OPEN_READONLY");//设置连接属性：当数据库不存在时不自动创建
-//    qDebug() << database;
-    if (!database.open())
+    QString dbPath = appDir.absoluteFilePath(datasetName);
+    int rc = sqlite3_open_v2(
+        dbPath.toUtf8().constData(),
+        &db,
+        SQLITE_OPEN_READONLY,
+        nullptr
+    );
+    if (rc != SQLITE_OK)
     {
-        qWarning() << "Error: Failed to connect database." << __FUNCTION__ << database.lastError();
-        QMessageBox::warning(QApplication::activeWindow(), "期刊信息数据库缺失！", database.lastError().text());
+        qWarning() << "Error: Failed to connect database." << __FUNCTION__ << sqlite3_errmsg(db);
+        QMessageBox::warning(QApplication::activeWindow(), "期刊信息数据库缺失！", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        db = nullptr;
     }
     else
     {
         qDebug() << "Successed to connect database.";
     }
 
-    allTableNames = database.tables();
+    // database.tables() equivalent: query sqlite_master
+    if (db) {
+        const char *tablesSQL = "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name";
+        sqlite3_stmt *stmt = nullptr;
+        rc = sqlite3_prepare_v2(db, tablesSQL, -1, &stmt, nullptr);
+        if (rc == SQLITE_OK) {
+            while (sqlite3_step(stmt) == SQLITE_ROW) {
+                allTableNames << columnText(stmt, 0);
+            }
+        }
+        sqlite3_finalize(stmt);
+    }
+
     // 重排表名顺序
     allTableNames = sortSpecialStrings(allTableNames);
     //selectTableNames(allTableNames);	//避免启动时执行两次
@@ -32,8 +73,9 @@ SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *pare
 
 SqliteDB::~SqliteDB()
 {
-    if(database.isOpen()){
-        database.close();
+    if (db) {
+        sqlite3_close(db);
+        db = nullptr;
     }
 }
 
@@ -54,31 +96,45 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName, bool allowSelec
 
     QList<Pair> journalInfo;
     QList<QString> journalInfoFieldNames;
-    QSqlQuery query;
+    sqlite3_stmt *stmt = nullptr;
+
     for(int i = 0; i < allKeyNames.size(); i++){
         if(allKeyNames[i].contains(journalName, Qt::CaseInsensitive)){
             const QString &table = tablePrimaryKeys[i].first;
             const QString &primaryKey = tablePrimaryKeys[i].second;
-            if(database.isOpen()){
-                QString select = "select * from " + table + " where " + primaryKey + " = '" + journalName + "' COLLATE NOCASE";   //设置查询不区分大小写
-                if (!query.exec(select)){
-                    qWarning() << "Error: Failed to select " << table << __FUNCTION__ << database.lastError();
+            if(db){
+                // Use parameterized query to handle journal names with special characters safely
+                const char *sql = "SELECT * FROM \"%1\" WHERE \"%2\" = ?1 COLLATE NOCASE";
+                QString select = QString(sql).arg(table, primaryKey);
+                int rc = sqlite3_prepare_v2(db, select.toUtf8().constData(), -1, &stmt, nullptr);
+                if (rc != SQLITE_OK) {
+                    qWarning() << "Error: Failed to prepare statement for" << table << __FUNCTION__ << sqlite3_errmsg(db);
+                    continue;
                 }
+                // Bind the journal name as a parameter
+                QByteArray journalUtf8 = journalName.toUtf8();
+                sqlite3_bind_text(stmt, 1, journalUtf8.constData(), -1, SQLITE_TRANSIENT);
+
                 //CCF推荐期刊中不同领域存在重复的期刊
-                while (query.next()){
+                while (sqlite3_step(stmt) == SQLITE_ROW){
                     QStringList fieldNames = tableFields[tableNames.indexOf(table)];
                     foreach(const QString &fieldName, fieldNames){
-                        QString value = query.value(fieldName).toString();
+                        int colIdx = columnIndex(stmt, fieldName.toUtf8().constData());
+                        if (colIdx < 0)
+                            continue;
+                        QString value = columnText(stmt, colIdx);
                         if(value.isEmpty() || value.isNull())
                             continue;
                         //排除字段名称重复的数据，主要是避免defaultPrimaryKeyValue（Journal字段）重复出现
                         if(!journalInfoFieldNames.contains(fieldName) || fieldName != defaultPrimaryKeyValue){
-                            Pair pair(fieldName, query.value(fieldName).toString());
+                            Pair pair(fieldName, columnText(stmt, colIdx));
                             journalInfo << pair;
                             journalInfoFieldNames << fieldName;
                         }
                     }
                 }
+                sqlite3_finalize(stmt);
+                stmt = nullptr;
             }
         }
     }
@@ -108,18 +164,24 @@ void SqliteDB::selectTableNames(const QStringList &selectedtableNames)
 void SqliteDB::selectTableFields()
 {
     tableFields.clear();
-    QSqlQuery query;
+    sqlite3_stmt *stmt = nullptr;
+
     foreach(const QString &table, tableNames){
         QStringList fieldNames;
-        if(database.isOpen()){
-            QString select = "PRAGMA table_info(" + table + ")";
-            if (!query.exec(select)){
-                qWarning() << "Error: Failed to selectTableFields." << table << __FUNCTION__ << database.lastError();
+        if(db){
+            QString pragma = QString("PRAGMA table_info(\"%1\")").arg(table);
+            int rc = sqlite3_prepare_v2(db, pragma.toUtf8().constData(), -1, &stmt, nullptr);
+            if (rc != SQLITE_OK) {
+                qWarning() << "Error: Failed to selectTableFields." << table << __FUNCTION__ << sqlite3_errmsg(db);
+                tableFields << fieldNames;
+                continue;
             }
-            while (query.next()){
-                QString fieldName = query.value(1).toString();  //  返回格式为：“字段序号、字段名称、字段类型”，这里只提取字段名称
+            while (sqlite3_step(stmt) == SQLITE_ROW){
+                // PRAGMA table_info returns: cid(0), name(1), type(2), notnull(3), dflt_value(4), pk(5)
+                QString fieldName = columnText(stmt, 1);
                 fieldNames << fieldName;
             }
+            sqlite3_finalize(stmt);
         }
         tableFields << fieldNames;
     }
@@ -153,20 +215,25 @@ void SqliteDB::selectAllJournalNames()
 {
     allKeyNames.clear();
     allJournalNamesList.clear();
-    QSqlQuery query;
+    sqlite3_stmt *stmt = nullptr;
+
     foreach(const Pair &pair, tablePrimaryKeys){
         const QString &table = pair.first;
         const QString &primaryKey = pair.second;
         QStringList keyNames;
-        if(database.isOpen()){
-            QString select = "select " + primaryKey + " from " + table;
-            if (!query.exec(select)){
-                qWarning() << "Error: Failed to select" << table << __FUNCTION__ << database.lastError();
+        if(db){
+            QString select = QString("SELECT \"%1\" FROM \"%2\"").arg(primaryKey, table);
+            int rc = sqlite3_prepare_v2(db, select.toUtf8().constData(), -1, &stmt, nullptr);
+            if (rc != SQLITE_OK) {
+                qWarning() << "Error: Failed to select" << table << __FUNCTION__ << sqlite3_errmsg(db);
+                allKeyNames << QStringList();
+                continue;
             }
-            while (query.next()){
-                QString journalName = query.value(0).toString();
+            while (sqlite3_step(stmt) == SQLITE_ROW){
+                QString journalName = columnText(stmt, 0);
                 keyNames << journalName;
             }
+            sqlite3_finalize(stmt);
         }
 //        qDebug() << keyNames.length();
         allKeyNames << keyNames;
@@ -244,4 +311,3 @@ QStringList SqliteDB::sortSpecialStrings(const QStringList &input) {
     }
     return result;
 }
-
