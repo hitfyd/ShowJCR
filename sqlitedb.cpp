@@ -24,10 +24,7 @@ SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *pare
         qDebug() << "Successed to connect database.";
     }
 
-    // 同时发现表和 VIEW（兼容规范化数据库结构，VIEW 对查询透明）
-    QSqlQuery q(database);
-    q.exec("SELECT name FROM sqlite_master WHERE type IN ('view')");
-    while (q.next()) allTableNames << q.value(0).toString();
+   allTableNames = database.tables();
     // 重排表名顺序
     allTableNames = sortSpecialStrings(allTableNames);
     //selectTableNames(allTableNames);	//避免启动时执行两次
