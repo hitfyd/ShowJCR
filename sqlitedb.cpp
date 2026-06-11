@@ -1,71 +1,33 @@
 #include "sqlitedb.h"
 
-#include <cstring>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
 #include <QMessageBox>
 #include <QApplication>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
-extern "C" {
-#include "sqlite3.h"
-}
-
-// Helper: find column index by name (returns -1 if not found)
-static int columnIndex(sqlite3_stmt *stmt, const char *name) {
-    int count = sqlite3_column_count(stmt);
-    for (int i = 0; i < count; i++) {
-        if (std::strcmp(sqlite3_column_name(stmt, i), name) == 0) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-// Helper: safely get column text, returning empty QString for NULL
-static QString columnText(sqlite3_stmt *stmt, int idx) {
-    if (sqlite3_column_type(stmt, idx) == SQLITE_NULL) {
-        return QString();
-    }
-    return QString::fromUtf8(
-        reinterpret_cast<const char*>(sqlite3_column_text(stmt, idx))
-    );
-}
-
 SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *parent) : QObject(parent)
 {
     //连接SQLite3数据库"jcr.db"，该数据集应放在运行目录下
-    QString dbPath = appDir.absoluteFilePath(datasetName);
-    int rc = sqlite3_open_v2(
-        dbPath.toUtf8().constData(),
-        &db,
-        SQLITE_OPEN_READONLY,
-        nullptr
-    );
-    if (rc != SQLITE_OK)
+    database = QSqlDatabase::addDatabase("QSQLITE");
+    database.setDatabaseName(appDir.absoluteFilePath(datasetName));
+    database.setConnectOptions("QSQLITE_OPEN_READONLY");//设置连接属性：当数据库不存在时不自动创建
+    //    qDebug() << database;
+    if (!database.open())
     {
-        qWarning() << "Error: Failed to connect database." << __FUNCTION__ << sqlite3_errmsg(db);
-        QMessageBox::warning(QApplication::activeWindow(), "期刊信息数据库缺失！", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        db = nullptr;
+        qWarning() << "Error: Failed to connect database." << __FUNCTION__ << database.lastError();
+        QMessageBox::warning(QApplication::activeWindow(), "期刊信息数据库缺失！", database.lastError().text());
     }
     else
     {
         qDebug() << "Successed to connect database.";
     }
 
-    // database.tables() equivalent: query sqlite_master
-    if (db) {
-        const char *tablesSQL = "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name";
-        sqlite3_stmt *stmt = nullptr;
-        rc = sqlite3_prepare_v2(db, tablesSQL, -1, &stmt, nullptr);
-        if (rc == SQLITE_OK) {
-            while (sqlite3_step(stmt) == SQLITE_ROW) {
-                allTableNames << columnText(stmt, 0);
-            }
-        }
-        sqlite3_finalize(stmt);
-    }
-
+    // 同时发现表和 VIEW（兼容规范化数据库结构，VIEW 对查询透明）
+    QSqlQuery q(database);
+    q.exec("SELECT name FROM sqlite_master WHERE type IN ('view')");
+    while (q.next()) allTableNames << q.value(0).toString();
     // 重排表名顺序
     allTableNames = sortSpecialStrings(allTableNames);
     //selectTableNames(allTableNames);	//避免启动时执行两次
@@ -73,9 +35,8 @@ SqliteDB::SqliteDB(const QDir &appDir, const QString &datasetName, QObject *pare
 
 SqliteDB::~SqliteDB()
 {
-    if (db) {
-        sqlite3_close(db);
-        db = nullptr;
+    if(database.isOpen()){
+        database.close();
     }
 }
 
@@ -96,45 +57,31 @@ QList<Pair> SqliteDB::getJournalInfo(const QString &journalName, bool allowSelec
 
     QList<Pair> journalInfo;
     QList<QString> journalInfoFieldNames;
-    sqlite3_stmt *stmt = nullptr;
-
+    QSqlQuery query;
     for(int i = 0; i < allKeyNames.size(); i++){
         if(allKeyNames[i].contains(journalName, Qt::CaseInsensitive)){
             const QString &table = tablePrimaryKeys[i].first;
             const QString &primaryKey = tablePrimaryKeys[i].second;
-            if(db){
-                // Use parameterized query to handle journal names with special characters safely
-                const char *sql = "SELECT * FROM \"%1\" WHERE \"%2\" = ?1 COLLATE NOCASE";
-                QString select = QString(sql).arg(table, primaryKey);
-                int rc = sqlite3_prepare_v2(db, select.toUtf8().constData(), -1, &stmt, nullptr);
-                if (rc != SQLITE_OK) {
-                    qWarning() << "Error: Failed to prepare statement for" << table << __FUNCTION__ << sqlite3_errmsg(db);
-                    continue;
+            if(database.isOpen()){
+                QString select = "select * from " + table + " where " + primaryKey + " = '" + journalName + "' COLLATE NOCASE";   //设置查询不区分大小写
+                if (!query.exec(select)){
+                    qWarning() << "Error: Failed to select " << table << __FUNCTION__ << database.lastError();
                 }
-                // Bind the journal name as a parameter
-                QByteArray journalUtf8 = journalName.toUtf8();
-                sqlite3_bind_text(stmt, 1, journalUtf8.constData(), -1, SQLITE_TRANSIENT);
-
                 //CCF推荐期刊中不同领域存在重复的期刊
-                while (sqlite3_step(stmt) == SQLITE_ROW){
+                while (query.next()){
                     QStringList fieldNames = tableFields[tableNames.indexOf(table)];
                     foreach(const QString &fieldName, fieldNames){
-                        int colIdx = columnIndex(stmt, fieldName.toUtf8().constData());
-                        if (colIdx < 0)
-                            continue;
-                        QString value = columnText(stmt, colIdx);
+                        QString value = query.value(fieldName).toString();
                         if(value.isEmpty() || value.isNull())
                             continue;
                         //排除字段名称重复的数据，主要是避免defaultPrimaryKeyValue（Journal字段）重复出现
                         if(!journalInfoFieldNames.contains(fieldName) || fieldName != defaultPrimaryKeyValue){
-                            Pair pair(fieldName, columnText(stmt, colIdx));
+                            Pair pair(fieldName, query.value(fieldName).toString());
                             journalInfo << pair;
                             journalInfoFieldNames << fieldName;
                         }
                     }
                 }
-                sqlite3_finalize(stmt);
-                stmt = nullptr;
             }
         }
     }
@@ -164,28 +111,22 @@ void SqliteDB::selectTableNames(const QStringList &selectedtableNames)
 void SqliteDB::selectTableFields()
 {
     tableFields.clear();
-    sqlite3_stmt *stmt = nullptr;
-
+    QSqlQuery query;
     foreach(const QString &table, tableNames){
         QStringList fieldNames;
-        if(db){
-            QString pragma = QString("PRAGMA table_info(\"%1\")").arg(table);
-            int rc = sqlite3_prepare_v2(db, pragma.toUtf8().constData(), -1, &stmt, nullptr);
-            if (rc != SQLITE_OK) {
-                qWarning() << "Error: Failed to selectTableFields." << table << __FUNCTION__ << sqlite3_errmsg(db);
-                tableFields << fieldNames;
-                continue;
+        if(database.isOpen()){
+            QString select = "PRAGMA table_info(" + table + ")";
+            if (!query.exec(select)){
+                qWarning() << "Error: Failed to selectTableFields." << table << __FUNCTION__ << database.lastError();
             }
-            while (sqlite3_step(stmt) == SQLITE_ROW){
-                // PRAGMA table_info returns: cid(0), name(1), type(2), notnull(3), dflt_value(4), pk(5)
-                QString fieldName = columnText(stmt, 1);
+            while (query.next()){
+                QString fieldName = query.value(1).toString();  //  返回格式为：“字段序号、字段名称、字段类型”，这里只提取字段名称
                 fieldNames << fieldName;
             }
-            sqlite3_finalize(stmt);
         }
         tableFields << fieldNames;
     }
-//    qDebug() << tableFields;
+    //    qDebug() << tableFields;
 
     Q_ASSERT(tableNames.size() == tableFields.size());
 }
@@ -206,7 +147,7 @@ void SqliteDB::setTablePrimaryKeys()
             tablePrimaryKeys << Pair(tableNames[i], tableFields[i][0]);
         }
     }
-//    qDebug() << tablePrimaryKeys;
+    //    qDebug() << tablePrimaryKeys;
 
     Q_ASSERT(tablePrimaryKeys.size() >= tableNames.size());
 }
@@ -215,46 +156,41 @@ void SqliteDB::selectAllJournalNames()
 {
     allKeyNames.clear();
     allJournalNamesList.clear();
-    sqlite3_stmt *stmt = nullptr;
-
+    QSqlQuery query;
     foreach(const Pair &pair, tablePrimaryKeys){
         const QString &table = pair.first;
         const QString &primaryKey = pair.second;
         QStringList keyNames;
-        if(db){
-            QString select = QString("SELECT \"%1\" FROM \"%2\"").arg(primaryKey, table);
-            int rc = sqlite3_prepare_v2(db, select.toUtf8().constData(), -1, &stmt, nullptr);
-            if (rc != SQLITE_OK) {
-                qWarning() << "Error: Failed to select" << table << __FUNCTION__ << sqlite3_errmsg(db);
-                allKeyNames << QStringList();
-                continue;
+        if(database.isOpen()){
+            QString select = "select " + primaryKey + " from " + table;
+            if (!query.exec(select)){
+                qWarning() << "Error: Failed to select" << table << __FUNCTION__ << database.lastError();
             }
-            while (sqlite3_step(stmt) == SQLITE_ROW){
-                QString journalName = columnText(stmt, 0);
+            while (query.next()){
+                QString journalName = query.value(0).toString();
                 keyNames << journalName;
             }
-            sqlite3_finalize(stmt);
         }
-//        qDebug() << keyNames.length();
+        //        qDebug() << keyNames.length();
         allKeyNames << keyNames;
-//        allJournalNamesList += keyNames;
+        //        allJournalNamesList += keyNames;
         //输入提示项去除大小写不一致的重复项
         foreach(const QString &keyName, keyNames){
             if(!allJournalNamesList.contains(keyName, Qt::CaseInsensitive))
                 allJournalNamesList << keyName;
         }
     }
-//    allJournalNamesList.removeDuplicates(); //  去重
-//    allJournalNamesList.removeAll({});  //    去除空关键字
-////    qDebug() << allJournalNamesList.length();
-//    //不分区大小写排序，然后删除只有大小写不一致的项
-//    allJournalNamesList.sort(Qt::CaseInsensitive);
-//    for(int i = 1; i < allJournalNamesList.length(); i++){
-//        if(allJournalNamesList[i].toLower() == allJournalNamesList[i-1].toLower()){
-//            allJournalNamesList.removeAt(i);
-//            i--;
-//        }
-//    }
+    //    allJournalNamesList.removeDuplicates(); //  去重
+    //    allJournalNamesList.removeAll({});  //    去除空关键字
+    ////    qDebug() << allJournalNamesList.length();
+    //    //不分区大小写排序，然后删除只有大小写不一致的项
+    //    allJournalNamesList.sort(Qt::CaseInsensitive);
+    //    for(int i = 1; i < allJournalNamesList.length(); i++){
+    //        if(allJournalNamesList[i].toLower() == allJournalNamesList[i-1].toLower()){
+    //            allJournalNamesList.removeAt(i);
+    //            i--;
+    //        }
+    //    }
     qDebug() << allJournalNamesList.length();
 
     Q_ASSERT(allKeyNames.size() == tablePrimaryKeys.size());

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ShowJCR LANGUAGES C CXX)
+project(ShowJCR LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -14,8 +14,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -flto -ffunction-sections -fdata-sections")
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--gc-sections -flto")
 set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -flto -s")  # -s = strip
-
-
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
@@ -32,13 +30,12 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -flto -s")  # -s = strip
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Sql REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
         showjcr.cpp
         showjcr.h
-        sqlite3.c
-        sqlite3.h
         sqlitedb.cpp
         sqlitedb.h
         aboutdialog.cpp
@@ -71,18 +68,8 @@ else()
     endif()
 endif()
 
-# SQLite compile options: minimize binary size for single-threaded read-only app
-target_compile_definitions(ShowJCR PRIVATE
-    SQLITE_THREADSAFE=0
-    SQLITE_OMIT_LOAD_EXTENSION
-    SQLITE_OMIT_DEPRECATED
-    SQLITE_OMIT_PROGRESS_CALLBACK
-    SQLITE_OMIT_SHARED_CACHE
-)
-# Suppress compiler warnings in vendored sqlite3.c
-set_source_files_properties(sqlite3.c PROPERTIES COMPILE_FLAGS "-w")
-
 target_link_libraries(ShowJCR PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(ShowJCR PRIVATE Qt${QT_VERSION_MAJOR}::Sql)
 
 # ============================================================
 # 部署目标: cmake --build . --target deploy
