@@ -7,12 +7,19 @@
 #include <QCompleter>
 #include <QMimeData>
 #include <QMenu>
+#ifdef Q_OS_LINUX
+#include <QStandardPaths>
+#endif
 
 const QString ShowJCR::author = "hitfyd";
 const QString ShowJCR::version = "v2026-1.2";
 const QString ShowJCR::email = "hitfyd@foxmail.com";
 const QString ShowJCR::codeURL = "https://github.com/hitfyd/ShowJCR";
+#ifndef Q_OS_LINUX
 const QString ShowJCR::updateURL = "https://github.com/hitfyd/ShowJCR/releases";
+#elifdef Q_OS_LINUX
+const QString ShowJCR::updateURL = "";//我不觉得会有人会发布linux版本
+#endif
 const QString ShowJCR::windowTitile = tr("分区表2026");
 const QString ShowJCR::logoIconName = ":/image/jcr-logo.jpg";
 const QString ShowJCR::datasetName = "jcr.db";  //数据集暂时无法使用资源文件；在程序自启动时，程序的运行目录是C:/WINDOWS/system32而不是程序目录，因此需要结合QApplication::applicationFilePath()修改
@@ -27,7 +34,23 @@ ShowJCR::ShowJCR(QWidget *parent)
 
     //获取程序运行信息
     appName = QApplication::applicationName();//程序名称
+		#ifndef Q_OS_LINUX
     appDir = QDir(QApplication::applicationDirPath());//程序目录（QDir类型）
+		#endif
+		#ifdef Q_OS_LINUX
+		//通过循环读取列表来搜索jcr.db
+		QStringList locations = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
+		for (const QString &path : locations) {
+				if (path.isEmpty()) continue;
+				QDir dir(path);
+				QString fullPath = dir.filePath(ShowJCR::datasetName);
+				if (QFileInfo::exists(fullPath)) {
+						appDir = path;
+						break; // 找到后通常应该跳出循环
+				}
+		}
+		#endif
+
     appPath = QApplication::applicationFilePath();// 程序路径
 
     qDebug() << "start check:" << appName << appDir.path() << appPath;
@@ -195,6 +218,7 @@ void ShowJCR::updateGUI()
 
 void ShowJCR::setAutoStart()
 {
+	#ifdef Q_OS_WIN
     QString nativeAppPath = QDir::toNativeSeparators(appPath);
     QString autoStartValue = nativeAppPath + " autoStart";//便于判断程序是否为自启动，注意参数前面有空格
     QString regPath = "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";//无需管理员权限，写入当前用户注册表
@@ -206,6 +230,31 @@ void ShowJCR::setAutoStart()
     else if(val == autoStartValue & !autoStart){//移除自启动
         reg.remove(appName);
     }
+	#elifdef Q_OS_LINUX
+	//通过循环读取列表来搜索desktop
+		QString sourceFile;
+		QStringList locations = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
+			for (const QString &path : locations) {
+					QDir dir(path);
+					QString fullPath = dir.filePath("io.hitfyd.ShowJCR.desktop");
+					if (QFileInfo::exists(fullPath)) {
+							sourceFile=fullPath; // 找到文件，返回路径
+					}
+			}
+		QString configDir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+		QDir autostartDir(configDir + "autostart");
+		if (!autostartDir.exists()) {
+			if (!autostartDir.mkpath(".")) {
+					return;
+				}
+		}
+		QString desktopFilePath = autostartDir.filePath("io.hitfyd.ShowJCR.desktop");
+		if (QFile::exists(desktopFilePath)){
+				QFile::remove(desktopFilePath);
+			}else{
+				QFile::copy(sourceFile, desktopFilePath);
+			}
+	#endif
 }
 
 void ShowJCR::closeEvent(QCloseEvent *event)

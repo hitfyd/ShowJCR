@@ -7,7 +7,11 @@
 #include <QDateTime>
 #include <QFile>
 #include <QDir>
-
+#ifdef Q_OS_LINUX
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusReply>
+#endif
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
  {
      QString text;
@@ -50,7 +54,11 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
      static QString logName = QApplication::applicationName() + "_log.txt";
      mutex.lock();
      QFile file(QDir::temp().absoluteFilePath(logName));    //日志文件写在temp目录
-     file.open(QIODevice::WriteOnly | QIODevice::Append);
+		 if (!file.open(QIODevice::WriteOnly | QIODevice::Append)) {
+				 qDebug() << "无法打开文件:" << file.errorString();
+				 return;
+		 }
+		 //消除警告 需要返回值
      QTextStream text_stream(&file);
      text_stream << message << "\r\n";
      file.flush();
@@ -65,13 +73,26 @@ int main(int argc, char *argv[])
     //注册日志函数
     qInstallMessageHandler(outputMessage);
     //设置程序单启动，使用共享内存创建的同时设置key,也可以setKey
-    QSharedMemory sm(QApplication::applicationName());
-    if(sm.attach()){
-        qWarning() << "SingleApp is running!" << __FUNCTION__;
-        QMessageBox::warning(QApplication::activeWindow(), "程序正在运行", "程序已经启动，请不要重复运行！请检查任务栏或系统托盘！");
-        return 0;
+		#ifdef Q_OS_WIN
+		QSharedMemory sm(QApplication::applicationName());
+		if(sm.attach()){
+				qWarning() << "SingleApp is running!" << __FUNCTION__;
+				QMessageBox::warning(QApplication::activeWindow(), "程序正在运行", "程序已经启动，请不要重复运行！请检查任务栏或系统托盘！");
+				return 0;
+		}
+		sm.create(1);
+		#endif
+		//linux 使用dbus注册服务 名称为反向域名法
+		#ifdef Q_OS_LINUX
+		a.setApplicationName("ShowJCR");
+    const QString serviceName = "io.hitfyd.ShowJCR";
+    if (!QDBusConnection::sessionBus().registerService(serviceName)) {
+				//注册失败自动触发
+				qWarning() << "SingleApp is running!" << __FUNCTION__;
+				QMessageBox::warning(QApplication::activeWindow(), "程序正在运行", "程序已经启动，请不要重复运行！请检查任务栏或系统托盘！");
+				return 0;
     }
-    sm.create(1);
+		#endif
     ShowJCR w;
     //如果有命令行参数而且参数是开机自启动
     if (argc > 1 && (argv[1] == QString("autoStart"))){//注意参数没有空格
