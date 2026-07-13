@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=ShowJCR
+GenericName=ShowJCR
+Comment[zh_CN]=查询期刊分区
+Exec=showjcr
+Icon=io.hitfyd.ShowJCR
+Type=Application
+StartupNotify=true
+Categories=Utility;
+Terminal=false
+X-GNOME-Autostart-enabled=true
+Keywords=ShowJCR;
+Keywords[zh_CN]=期刊;中科院;分区;查询;搜索;
