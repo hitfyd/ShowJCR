@@ -11,10 +11,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -flto -ffunction-sections -fdata-sections")
-set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--gc-sections -flto")
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -flto -s")  # -s = strip
-
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
 # They need to be set before the find_package( ...) calls below.
@@ -29,9 +25,17 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -flto -s")  # -s = strip
 #endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+if(LINUX)
+    include(GNUInstallDirs)
+    if(POLICY CMP0072)
+        cmake_policy(SET CMP0072 NEW)
+        set(OpenGL_GL_PREFERENCE GLVND)
+    endif()
+    find_package(OpenGL REQUIRED)
+endif()
+
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Sql REQUIRED)
-
 set(PROJECT_SOURCES
         main.cpp
         showjcr.cpp
@@ -67,7 +71,17 @@ else()
         )
     endif()
 endif()
-
+if(LINUX)
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core DBus)
+    target_link_libraries(ShowJCR PRIVATE Qt${QT_VERSION_MAJOR}::DBus)
+    set_target_properties(ShowJCR PROPERTIES OUTPUT_NAME "showjcr")
+    install(TARGETS ShowJCR
+            RUNTIME
+        )
+    install(FILES 中科院分区表及JCR原始数据文件/jcr.db DESTINATION ${CMAKE_INSTALL_DATADIR}/ShowJCR)
+    install(FILES resources/io.hitfyd.ShowJCR.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+    install(FILES resources/image/jcr-logo.jpg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps RENAME io.hitfyd.ShowJCR.jpg)
+endif()
 target_link_libraries(ShowJCR PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(ShowJCR PRIVATE Qt${QT_VERSION_MAJOR}::Sql)
 
