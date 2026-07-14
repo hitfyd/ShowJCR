@@ -239,19 +239,20 @@ void ShowJCR::setAutoStart()
 					QString fullPath = dir.filePath("io.hitfyd.ShowJCR.desktop");
 					if (QFileInfo::exists(fullPath)) {
 							sourceFile=fullPath; // 找到文件，返回路径
+							break;
 					}
 			}
 		QString configDir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
-		QDir autostartDir(configDir + "autostart");
+		QDir autostartDir(configDir + "/autostart/");
 		if (!autostartDir.exists()) {
 			if (!autostartDir.mkpath(".")) {
 					return;
 				}
 		}
 		QString desktopFilePath = autostartDir.filePath("io.hitfyd.ShowJCR.desktop");
-		if (QFile::exists(desktopFilePath)){
+		if (QFile::exists(desktopFilePath)&&!autoStart){
 				QFile::remove(desktopFilePath);
-			}else{
+			}else if(autoStart&&!QFile::exists(desktopFilePath)){
 				QFile::copy(sourceFile, desktopFilePath);
 			}
 	#endif
