@@ -4,7 +4,7 @@
 
 ## 数据来源
 
-新锐期刊分区表来源于https://www.xr-scholar.com，最新为2026年版（2026年3月24日发布），涵盖但不限于 SCIE、SSCI、ESCI 等核心来源，共22299 种期刊和15种重要会议论文集（计算机领域）。同时，不再单独发布预警名单，对预警期刊标记“Under Review”。
+新锐期刊分区表来源于[https://www.xr-scholar.com](https://www.xr-scholar.com)，最新为2026年版（2026年3月24日发布），涵盖但不限于 SCIE、SSCI、ESCI 等核心来源，共22299 种期刊和15种重要会议论文集（计算机领域）。同时，不再单独发布预警名单，对预警期刊标记“Under Review”。
 
 中科院分区表升级版数据来源于[advanced.fenqubiao.com](http://advanced.fenqubiao.com)，信息包括期刊是否为Review、是否为Open Access、Web of Science收录类型（分为SCI、SCIE、SSCI、ESCI等）、是否为Top期刊、大类分区信息、（一至多个）小类分区信息。保留最新的2025年版（2025年3月20日发布）作为对比。
 
