@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QFile>
 #include <QDir>
+#include <QIcon>
 #ifdef Q_OS_LINUX
 #include <QDBusConnection>
 #include <QDBusInterface>
@@ -70,6 +71,7 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setWindowIcon(QIcon(":/image/jcr-logo.jpg"));
     //注册日志函数
     qInstallMessageHandler(outputMessage);
     //设置程序单启动，使用共享内存创建的同时设置key,也可以setKey

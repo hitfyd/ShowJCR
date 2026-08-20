@@ -9,6 +9,13 @@
 #include <QCloseEvent>
 #include <QDir>
 #include <QColor>
+#include <QFont>
+#include <QMap>
+
+class QCheckBox;
+class QCompleter;
+class QAbstractListModel;
+class QTableView;
 #include <aboutdialog.h>
 #include <tableselectordialog.h>
 
@@ -32,21 +39,11 @@ private slots:
     //从剪切板获取期刊名称
     void getClipboard();
 
-    void on_checkBox_autoStart_stateChanged(int arg1);
-
-    void on_checkBox_exit2Taskbar_stateChanged(int arg1);
-
-    void on_checkBox_autoActivateWindow_stateChanged(int arg1);
-
-    void on_checkBox_monitorClipboard_stateChanged(int arg1);
-
     int OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason);
 
     int OnExit();
 
     void on_lineEdit_journalName_textEdited(const QString &arg1);
-
-    void on_toolButton_list_clicked();
 
     void show_selectTable();
 
@@ -56,8 +53,12 @@ private:
     //系统提示语
     const QString cueWords[3] = {"请输入期刊名称！", "请检查期刊名称！", "请至少选择一个表！"};
     //强调颜色
-    const QColor color_header = QColor(119, 136, 153);  //lightslategray
-    const QColor color_highlight = QColor(240, 128, 128);   //lightcoral
+    const QColor color_header = QColor(226, 232, 240);
+    const QColor color_headerText = QColor(71, 85, 105);
+    const QColor color_highlight = QColor(254, 226, 226);
+    const QColor color_highlightText = QColor(185, 28, 28);
+    const QColor color_keyBg = QColor(248, 250, 252);
+    const QColor color_keyText = QColor(100, 116, 139);
     //软件常量，包括作者信息、资源文件路径等
     static const QString author;
     static const QString version;
@@ -80,6 +81,16 @@ private:
     QSystemTrayIcon m_systray;//系统托盘
     TableSelectorDialog *selectTableDialog;//数据表选择窗口
     AboutDialog *aboutDialog;//关于窗口
+    QCompleter *journalCompleter = nullptr;
+    QAbstractListModel *journalCompleterModel = nullptr;
+    QMenu *settingsMenu = nullptr;
+    QMenu *appMenu = nullptr;
+    QCheckBox *checkBox_autoStart = nullptr;
+    QCheckBox *checkBox_exit2Taskbar = nullptr;
+    QCheckBox *checkBox_monitorClipboard = nullptr;
+    QCheckBox *checkBox_autoActivateWindow = nullptr;
+    bool suppressCompleterRefresh = false;
+    QString completerHighlightedText;
 
     //程序运行参数
     QSettings *settings;
@@ -95,8 +106,8 @@ private:
 //        int level;  //合法值只包括:1、2、3、4
 //    };
 
-    //期刊信息
-    QList<Pair> journalInfo;    //期刊详细信息
+    //期刊信息（按表分组）
+    QMap<QString, QList<Pair>> journalInfoByTable;
     QString journalName;    //期刊名称，用于输入和查询
 //    int year;   //中科院分区表升级版发布年份
 //    QString ISSN;   //国际标准连续出版物号（International Standard Serial Number，ISSN）
@@ -113,9 +124,23 @@ private:
 //    QStringList allJournalNamesList;
 
     //输入检查，运行核心查询及更新功能
+    void submitJournalSearch();
     void run(const QString &input);
     //更新界面显示的期刊信息
     void updateGUI();
+    void setupAppearance();
+    void setupSettingsPanel();
+    void setupAppMenus();
+    void showTrayMenu();
+    QWidget *createAppMenuPanel(QMenu *hostMenu);
+    void syncSettingsUi();
+    void setupJournalCompleter();
+    void refreshJournalCompleter(const QString &text);
+    QString completerSelectionText() const;
+    void applyCompleterSelectionAndSearch(const QString &text);
+    QFont tableFont(QFont::Weight weight = QFont::Normal) const;
+    QTableView *createInfoTableView(const QList<Pair> &info);
+    static QString tableDisplayName(const QString &table);
     //设置程序开机自启动（设置和移除）
     void setAutoStart();
     //重写closeEvent

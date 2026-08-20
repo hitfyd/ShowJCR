@@ -73,4 +73,7 @@ CMakeLists.txt.user
 *.exe
 
 build/*
+dist/*
 
+# project Makefile (do not ignore)
+!/Makefile

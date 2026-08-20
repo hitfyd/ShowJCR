@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QDir>
+#include <QSet>
+#include <QHash>
 #include <QMultiMap>
 #include <QtSql/QSqlDatabase>
 
@@ -16,7 +18,12 @@ public:
     ~SqliteDB();
     QStringList getAllTableNames();     //  返回当前数据库中包含的所有表的名字
     QStringList getAllJournalNames();   //  返回当前数据库中包含的所有有效期刊名称，用于输入联想和判断输入期刊名称是否正确
+    QString findJournalName(const QString &input) const;
+    QString resolveToCanonicalJournal(const QString &input) const;
+    QStringList findJournalMatches(const QString &input, int limit = 20) const;
     QList<Pair> getJournalInfo(const QString &journalName, bool allowSelectAgain = true);
+    QMap<QString, QList<Pair>> getJournalInfoByTable(const QString &journalName);
+    QStringList getDisplayTableNames();
     void selectTableNames(const QStringList &tableNames);    //  更新需要查询的表名称，存储在tableNames中
 
 private:
@@ -30,11 +37,19 @@ private:
     QList<Pair> tablePrimaryKeys;    // 存储表（Key）及其对应的主键字段名称(T)，注意一个表可能不止一个主键
     QList<QStringList> allKeyNames;    //存储表及其主键列中的所有值，存储顺序和tablePrimaryKeys一一对应，用于判断输入期刊所应查询的tablePrimaryKeys
     QStringList allJournalNamesList;    //组合成当前数据库中包含的所有有效期刊名称，用于输入联想和判断输入期刊名称是否正确
+    QHash<QString, QString> journalAliasToCanonical; // 中文刊名/刊名等别名 -> Journal
 
     void selectTableFields();   //  根据tableNames，依次查询对应表的字段名称，存储在tableFields中
     void setTablePrimaryKeys(); //  设置表及其对应的主键，通常一个表对应一个主键，个别表可能有多个主键，存储在tablePrimaryKeys中
     void selectAllJournalNames();    //根据tablePrimaryKeys，查询数据库中所有表对应主键的值作为期刊目录，存储在allJournalNames中
+    void rebuildJournalAliases();
     QStringList sortSpecialStrings(const QStringList &input);
+    static QStringList tokenizeJournalName(const QString &text);
+    static QSet<QString> expandedJournalTokens(const QString &text);
+    static QString expandJournalToken(const QString &token);
+    static bool journalTokenMatches(const QString &queryToken, const QSet<QString> &nameTokens, bool allowPrefix);
+    static bool journalMatchesQuery(const QStringList &queryTokens, const QSet<QString> &nameTokens, bool allowPrefixOnLast);
+    static int journalMatchScore(const QSet<QString> &queryTokens, const QSet<QString> &nameTokens, int matchedCount);
 signals:
 
 };
