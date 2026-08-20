@@ -1,6 +1,15 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
+
+# 清理 shell 中残留的旧 LLVM 路径，避免 ld: search path not found
+if(DEFINED ENV{LDFLAGS} AND "$ENV{LDFLAGS}" MATCHES "/usr/local/opt/llvm/lib")
+    string(REGEX REPLACE "-L/usr/local/opt/llvm/lib ?" "" _showjcr_ldflags "$ENV{LDFLAGS}")
+    string(STRIP "${_showjcr_ldflags}" _showjcr_ldflags)
+    set(ENV{LDFLAGS} "${_showjcr_ldflags}")
+endif()
 
 project(ShowJCR LANGUAGES CXX)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -54,7 +63,7 @@ set(app_WINRC resources/logo.rc)
 set(qrc_SOURCES resources/resources.qrc)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(ShowJCR WIN32 #增加WIN32，否则独立运行时会出现命令行
+    qt_add_executable(ShowJCR WIN32 MACOSX_BUNDLE
         ${PROJECT_SOURCES}
         ${app_WINRC}
         ${qrc_SOURCES}
@@ -84,6 +93,40 @@ if(LINUX)
 endif()
 target_link_libraries(ShowJCR PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(ShowJCR PRIVATE Qt${QT_VERSION_MAJOR}::Sql)
+
+if(MSVC)
+    target_compile_options(ShowJCR PRIVATE /W4)
+else()
+    target_compile_options(ShowJCR PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+if(APPLE)
+    set(APP_ICON "${CMAKE_SOURCE_DIR}/resources/appicon.icns")
+    set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    target_sources(ShowJCR PRIVATE ${APP_ICON})
+    set_target_properties(ShowJCR PROPERTIES MACOSX_BUNDLE_ICON_FILE appicon.icns)
+
+    add_custom_command(TARGET ShowJCR POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:ShowJCR>/../Resources"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_SOURCE_DIR}/中科院分区表及JCR原始数据文件/jcr.db"
+            "$<TARGET_FILE_DIR:ShowJCR>/../Resources/jcr.db"
+    )
+
+    add_custom_target(install-macos
+        COMMAND "${CMAKE_SOURCE_DIR}/scripts/macos-install.sh"
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        COMMENT "Build, bundle, sign, and install ShowJCR.app to /Applications"
+        USES_TERMINAL
+    )
+
+    add_custom_target(package-macos
+        COMMAND "${CMAKE_SOURCE_DIR}/scripts/macos-install.sh" --build-only
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        COMMENT "Build and package ShowJCR.app into build/"
+        USES_TERMINAL
+    )
+endif()
 
 # ============================================================
 # 部署目标: cmake --build . --target deploy

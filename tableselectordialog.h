@@ -19,8 +19,13 @@ public:
     ~TableSelectorDialog();
     const QStringList selectedTables();
     const QStringList getAllTables();
+    void setSelectedTables(const QStringList &tables);
 
 private:
+    void setupAppearance();
+    static QString tableDisplayName(const QString &table);
+    void setAllChecked(bool checked);
+
     Ui::TableSelectorDialog *ui;
     QListWidget *listWidget;
 };

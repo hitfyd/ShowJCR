@@ -3,5 +3,8 @@
         <file>image/jcr-logo.jpg</file>
         <file>icon/exit.svg</file>
         <file>icon/menu.svg</file>
+        <file>icon/settings.svg</file>
+        <file>icon/table.svg</file>
+        <file>icon/info.svg</file>
     </qresource>
 </RCC>
