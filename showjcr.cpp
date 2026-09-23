@@ -287,6 +287,29 @@ ShowJCR::ShowJCR(QWidget *parent)
     checkBox_monitorClipboard->setChecked(monitorClipboard);
     checkBox_autoActivateWindow->setChecked(autoActivateWindow);
     syncSettingsUi();
+
+    auto applySettings = [this]() {
+        exit2Taskbar = checkBox_exit2Taskbar->isChecked();
+        autoStart = checkBox_autoStart->isChecked();
+        monitorClipboard = checkBox_monitorClipboard->isChecked();
+        autoActivateWindow = checkBox_autoActivateWindow->isChecked();
+        syncSettingsUi();
+        setAutoStart();
+    };
+
+    connect(checkBox_exit2Taskbar, &QCheckBox::toggled, this, applySettings);
+    connect(checkBox_autoStart, &QCheckBox::toggled, this, applySettings);
+    connect(checkBox_monitorClipboard, &QCheckBox::toggled, this, [this, applySettings](bool checked) {
+        if (!checked && checkBox_autoActivateWindow->isChecked())
+            checkBox_autoActivateWindow->setChecked(false);
+        applySettings();
+    });
+    connect(checkBox_autoActivateWindow, &QCheckBox::toggled, this, [this, applySettings](bool checked) {
+        if (checked && !checkBox_monitorClipboard->isChecked())
+            checkBox_monitorClipboard->setChecked(true);
+        applySettings();
+    });
+
     QStringList old_selectedTables = settings->value("selectedTables").toStringList();
     const QStringList knownTables = settings->value("knownTables").toStringList();
     const QStringList allTables = sqliteDB->getAllTableNames();
@@ -735,27 +758,27 @@ void ShowJCR::setupSettingsPanel()
     checkBox_autoStart->setVisible(false);
 #endif
 
-    auto applySettings = [this]() {
-        exit2Taskbar = checkBox_exit2Taskbar->isChecked();
-        autoStart = checkBox_autoStart->isChecked();
-        monitorClipboard = checkBox_monitorClipboard->isChecked();
-        autoActivateWindow = checkBox_autoActivateWindow->isChecked();
-        syncSettingsUi();
-        setAutoStart();
-    };
+    // auto applySettings = [this]() {
+    //     exit2Taskbar = checkBox_exit2Taskbar->isChecked();
+    //     autoStart = checkBox_autoStart->isChecked();
+    //     monitorClipboard = checkBox_monitorClipboard->isChecked();
+    //     autoActivateWindow = checkBox_autoActivateWindow->isChecked();
+    //     syncSettingsUi();
+    //     setAutoStart();
+    // };
 
-    connect(checkBox_exit2Taskbar, &QCheckBox::toggled, this, applySettings);
-    connect(checkBox_autoStart, &QCheckBox::toggled, this, applySettings);
-    connect(checkBox_monitorClipboard, &QCheckBox::toggled, this, [this, applySettings](bool checked) {
-        if (!checked && checkBox_autoActivateWindow->isChecked())
-            checkBox_autoActivateWindow->setChecked(false);
-        applySettings();
-    });
-    connect(checkBox_autoActivateWindow, &QCheckBox::toggled, this, [this, applySettings](bool checked) {
-        if (checked && !checkBox_monitorClipboard->isChecked())
-            checkBox_monitorClipboard->setChecked(true);
-        applySettings();
-    });
+    // connect(checkBox_exit2Taskbar, &QCheckBox::toggled, this, applySettings);
+    // connect(checkBox_autoStart, &QCheckBox::toggled, this, applySettings);
+    // connect(checkBox_monitorClipboard, &QCheckBox::toggled, this, [this, applySettings](bool checked) {
+    //     if (!checked && checkBox_autoActivateWindow->isChecked())
+    //         checkBox_autoActivateWindow->setChecked(false);
+    //     applySettings();
+    // });
+    // connect(checkBox_autoActivateWindow, &QCheckBox::toggled, this, [this, applySettings](bool checked) {
+    //     if (checked && !checkBox_monitorClipboard->isChecked())
+    //         checkBox_monitorClipboard->setChecked(true);
+    //     applySettings();
+    // });
 }
 
 void ShowJCR::setupAppMenus()
@@ -1054,7 +1077,7 @@ void ShowJCR::updateGUI()
 
 void ShowJCR::setAutoStart()
 {
-	#ifdef Q_OS_WIN
+#ifdef Q_OS_WIN
     QString nativeAppPath = QDir::toNativeSeparators(appPath);
     QString autoStartValue = nativeAppPath + " autoStart";//便于判断程序是否为自启动，注意参数前面有空格
     QString regPath = "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";//无需管理员权限，写入当前用户注册表
@@ -1119,7 +1142,7 @@ void ShowJCR::setAutoStart()
 			}else if(autoStart&&!QFile::exists(desktopFilePath)){
 				QFile::copy(sourceFile, desktopFilePath);
 			}
-	#endif
+#endif
 }
 
 void ShowJCR::closeEvent(QCloseEvent *event)
